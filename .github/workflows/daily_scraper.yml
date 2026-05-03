@@ -35,7 +35,8 @@ jobs:
             if (!require('httr'))     install.packages('httr')
             if (!require('jsonlite')) install.packages('jsonlite')
             if (!require('dplyr'))    install.packages('dplyr')
-            library(httr); library(jsonlite); library(dplyr)
+            if (!require('xml2'))     install.packages('xml2')
+            library(httr); library(jsonlite); library(dplyr); library(xml2)
             cat('Packages OK\n')
           "
 
