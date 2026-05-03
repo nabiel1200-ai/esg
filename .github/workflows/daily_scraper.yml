@@ -52,7 +52,7 @@ jobs:
         run: |
           Rscript scripts/03_koersen.R
 
-    - name: Commit updated data
+      - name: Commit updated data
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
