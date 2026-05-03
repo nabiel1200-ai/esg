@@ -8,8 +8,8 @@ library(dplyr)
 library(httr)
 library(jsonlite)
 
-ANTHROPIC_KEY <- "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"
-CURRENTS_KEY  <- "9PZ2jYsfP-VVk0PgteVCxI-IcGLzughj9jauVCl_VUwkKvtB"
+ANTHROPIC_KEY <- Sys.getenv("ANTHROPIC_KEY")
+CURRENTS_KEY  <- Sys.getenv("CURRENTS_KEY")
 pad_data      <- "/Users/nabiel/Desktop/Controversy_trading/ESG_Alpha_Live/data"
 
 sp500 <- read.csv(file.path(pad_data, "sp500_tickers.csv"),
