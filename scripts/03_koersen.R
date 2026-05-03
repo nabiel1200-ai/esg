@@ -20,9 +20,18 @@ events <- read.csv(file.path(pad_data, "events_detected.csv"),
 cat("Events ingeladen:", nrow(events), "\n")
 
 # Alleen events met een ticker en uit de laatste 30 dagen
+# Naar:
 events_met_ticker <- events %>%
+  mutate(ticker = if ("ticker" %in% names(.)) ticker else NA) %>%
   filter(!is.na(ticker), ticker != "NA", ticker != "") %>%
   filter(pub_date >= Sys.Date() - 30)
+
+cat("Events met ticker (laatste 30 dagen):", nrow(events_met_ticker), "\n\n")
+
+if (nrow(events_met_ticker) == 0) {
+  cat("Geen events met ticker gevonden — wacht op nieuwe events van AI agent\n")
+  quit(status = 0)
+}
 
 cat("Events met ticker (laatste 30 dagen):", nrow(events_met_ticker), "\n\n")
 
