@@ -19,8 +19,7 @@ events <- read.csv(file.path(pad_data, "events_detected.csv"),
 
 cat("Events ingeladen:", nrow(events), "\n")
 
-# Alleen events met een ticker en uit de laatste 30 dagen
-# Naar:
+# Alleen events met ticker uit de laatste 30 dagen
 events_met_ticker <- events %>%
   mutate(ticker = if ("ticker" %in% names(.)) ticker else NA) %>%
   filter(!is.na(ticker), ticker != "NA", ticker != "") %>%
@@ -30,13 +29,6 @@ cat("Events met ticker (laatste 30 dagen):", nrow(events_met_ticker), "\n\n")
 
 if (nrow(events_met_ticker) == 0) {
   cat("Geen events met ticker gevonden — wacht op nieuwe events van AI agent\n")
-  quit(status = 0)
-}
-
-cat("Events met ticker (laatste 30 dagen):", nrow(events_met_ticker), "\n\n")
-
-if (nrow(events_met_ticker) == 0) {
-  cat("Geen events met ticker gevonden\n")
   quit(status = 0)
 }
 
@@ -64,14 +56,14 @@ get_return <- function(ticker, entry_date, exit_date) {
     exit_row  <- price_df %>% filter(date >= exit_date)  %>% slice(1)
 
     if (nrow(entry_row) == 0) return(list(
-      entry_price   = NA, exit_price = NA,
-      stock_return  = NA, short_return = NA, status = "Geen data"
+      entry_price  = NA, exit_price   = NA,
+      stock_return = NA, short_return = NA,
+      status       = "Geen data"
     ))
 
     entry_price <- entry_row$close
 
     if (nrow(exit_row) == 0 || exit_date > Sys.Date()) {
-      # Positie nog open — gebruik laatste beschikbare koers
       current_price  <- tail(price_df$close, 1)
       current_return <- (current_price - entry_price) / entry_price * 100
       return(list(
@@ -82,8 +74,8 @@ get_return <- function(ticker, entry_date, exit_date) {
         status       = "Open"
       ))
     } else {
-      exit_price    <- exit_row$close
-      stock_return  <- (exit_price - entry_price) / entry_price * 100
+      exit_price   <- exit_row$close
+      stock_return <- (exit_price - entry_price) / entry_price * 100
       return(list(
         entry_price  = round(entry_price, 2),
         exit_price   = round(exit_price, 2),
@@ -94,7 +86,7 @@ get_return <- function(ticker, entry_date, exit_date) {
     }
 
   }, error = function(e) {
-    list(entry_price = NA, exit_price = NA,
+    list(entry_price = NA, exit_price   = NA,
          stock_return = NA, short_return = NA,
          status = paste0("Fout: ", conditionMessage(e)))
   })
@@ -147,13 +139,13 @@ signals_df <- bind_rows(results)
 
 cat("\n=== PERFORMANCE SAMENVATTING ===\n")
 cat("Totaal signals:", nrow(signals_df), "\n")
-cat("Open:          ", sum(signals_df$status == "Open", na.rm=TRUE), "\n")
-cat("Gesloten:      ", sum(signals_df$status == "Gesloten", na.rm=TRUE), "\n\n")
+cat("Open:          ", sum(signals_df$status == "Open",     na.rm = TRUE), "\n")
+cat("Gesloten:      ", sum(signals_df$status == "Gesloten", na.rm = TRUE), "\n\n")
 
 perf <- signals_df %>% filter(!is.na(short_return))
 if (nrow(perf) > 0) {
   cat("Gem. SHORT return:", round(mean(perf$short_return), 4), "%\n")
-  cat("Hit ratio:        ", round(mean(perf$short_return > 0)*100, 1), "%\n\n")
+  cat("Hit ratio:        ", round(mean(perf$short_return > 0) * 100, 1), "%\n\n")
 }
 
 cat("=== PER SIGNAL ===\n")
