@@ -32,11 +32,12 @@ jobs:
         run: |
           Rscript -e "
             options(repos = c(CRAN = 'https://cran.r-project.org'))
-            if (!require('httr'))     install.packages('httr')
-            if (!require('jsonlite')) install.packages('jsonlite')
-            if (!require('dplyr'))    install.packages('dplyr')
-            if (!require('xml2'))     install.packages('xml2')
-            library(httr); library(jsonlite); library(dplyr); library(xml2)
+            if (!require('httr'))      install.packages('httr')
+            if (!require('jsonlite'))  install.packages('jsonlite')
+            if (!require('dplyr'))     install.packages('dplyr')
+            if (!require('xml2'))      install.packages('xml2')
+            if (!require('quantmod'))  install.packages('quantmod')
+            library(httr); library(jsonlite); library(dplyr); library(xml2); library(quantmod)
             cat('Packages OK\n')
           "
 
@@ -47,10 +48,14 @@ jobs:
         run: |
           Rscript scripts/02_ai_agent.R
 
+      - name: Run koersen
+        run: |
+          Rscript scripts/03_koersen.R
+
       - name: Commit updated data
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/events_detected.csv
+          git add data/events_detected.csv data/signals_live.csv
           git diff --quiet && git diff --staged --quiet || git commit -m "Daily ESG update $(date)"
           git push
