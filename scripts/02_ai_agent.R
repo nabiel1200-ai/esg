@@ -10,8 +10,7 @@ library(jsonlite)
 
 ANTHROPIC_KEY <- Sys.getenv("ANTHROPIC_KEY")
 CURRENTS_KEY  <- Sys.getenv("CURRENTS_KEY")
-# Naar:
-pad_data <- "data"
+pad_data      <- "data"
 
 sp500 <- read.csv(file.path(pad_data, "sp500_tickers.csv"),
                   stringsAsFactors = FALSE)
@@ -67,8 +66,8 @@ for (q in queries) {
 }
 
 if (length(all_articles) == 0) {
-  cat("Geen nieuws gevonden\n")
-  stop("Geen artikelen")
+  cat("Geen nieuws gevonden vandaag\n")
+  quit(status = 0)
 }
 
 alle_artikelen <- bind_rows(all_articles) %>%
@@ -81,7 +80,6 @@ cat("Artikelen gevonden:", nrow(alle_artikelen), "\n\n")
 # ============================================================
 
 beoordeel_artikel <- function(titel, api_key) {
-  
   prompt <- paste0(
     "Je bent een ESG analist. Beoordeel het volgende nieuwsartikel:\n\n",
     "TITEL: ", titel, "\n\n",
@@ -93,13 +91,13 @@ beoordeel_artikel <- function(titel, api_key) {
     "Antwoord ALLEEN in dit JSON formaat zonder extra tekst:\n",
     "{\"is_esg\": true, \"bedrijf\": \"NAAM\", \"pillar\": \"G\", \"severity\": 2}"
   )
-  
+
   body <- list(
     model      = "claude-haiku-4-5-20251001",
     max_tokens = 150,
     messages   = list(list(role = "user", content = prompt))
   )
-  
+
   tryCatch({
     resp <- POST(
       "https://api.anthropic.com/v1/messages",
@@ -111,17 +109,16 @@ beoordeel_artikel <- function(titel, api_key) {
       body = toJSON(body, auto_unbox = TRUE),
       timeout(15)
     )
-    
+
     if (status_code(resp) != 200) return(NULL)
-    
+
     data  <- fromJSON(content(resp, "text", encoding = "UTF-8"))
     tekst <- data$content$text[1]
     tekst <- gsub("```json|```", "", tekst)
     tekst <- trimws(tekst)
-    
     result <- fromJSON(tekst)
     return(result)
-    
+
   }, error = function(e) {
     cat("    Fout:", conditionMessage(e), "\n")
     return(NULL)
@@ -140,37 +137,30 @@ for (i in 1:nrow(alle_artikelen)) {
   titel    <- alle_artikelen$title[i]
   pub_date <- alle_artikelen$pub_date[i]
   link     <- alle_artikelen$link[i]
-  
+
   cat("  [", i, "/", nrow(alle_artikelen), "]", substr(titel, 1, 60), "...\n")
-  
+
   result <- beoordeel_artikel(titel, ANTHROPIC_KEY)
-  
-  if (is.null(result)) { Sys.sleep(0.5); next }
-  if (!isTRUE(result$is_esg)) { cat("    Geen ESG event\n"); Sys.sleep(0.5); next }
+
+  if (is.null(result))                                      { Sys.sleep(0.5); next }
+  if (!isTRUE(result$is_esg))                              { cat("    Geen ESG event\n"); Sys.sleep(0.5); next }
   if (is.null(result$bedrijf) || result$bedrijf == "null") { Sys.sleep(0.5); next }
-  
-  isin_match <- sp500 %>%
-    filter(grepl(result$bedrijf, company, ignore.case = TRUE)) %>%
-    slice(1)
-  
-  isin <- if (nrow(isin_match) > 0) isin_match$isin[1] else NA
-  
-  # Vervang de ISIN matching stap door dit:
+
   event <- data.frame(
-    isin       = NA,          # geen ISIN matching meer
+    isin       = NA,
     company    = result$bedrijf,
     title      = titel,
     pub_date   = pub_date,
     link       = link,
     pillar     = result$pillar,
-    severity   = as.integer(result$severity),
+    severity   = as.integer(pmin(result$severity, 3)),
     scraped_at = as.numeric(Sys.Date()),
     stringsAsFactors = FALSE
   )
-  
+
   nieuwe_events[[i]] <- event
   cat("    ESG event:", result$bedrijf, "| Pillar:", result$pillar, "| Severity:", result$severity, "\n")
-  
+
   Sys.sleep(0.5)
 }
 
@@ -179,99 +169,32 @@ for (i in 1:nrow(alle_artikelen)) {
 # ============================================================
 
 if (length(nieuwe_events) == 0) {
-  cat("\nGeen nieuwe ESG events gevonden\n")
+  cat("\nGeen nieuwe ESG events gevonden vandaag\n")
 } else {
   nieuwe_df <- bind_rows(nieuwe_events) %>% filter(!is.na(pillar))
-  
+
   cat("\n=== NIEUWE EVENTS ===\n")
   cat("Gevonden:", nrow(nieuwe_df), "\n\n")
   print(nieuwe_df %>% select(company, pub_date, pillar, severity, title))
-  
+
   bestaand_pad <- file.path(pad_data, "events_detected.csv")
-  
+
   if (file.exists(bestaand_pad)) {
     bestaand <- read.csv(bestaand_pad, stringsAsFactors = FALSE) %>%
       mutate(pub_date = as.Date(pub_date))
     gecombineerd <- bind_rows(bestaand, nieuwe_df) %>%
-      distinct(isin, title, .keep_all = TRUE) %>%
+      distinct(company, title, .keep_all = TRUE) %>%
       arrange(desc(pub_date))
   } else {
     gecombineerd <- nieuwe_df
   }
-  
+
   write.csv(gecombineerd,
             file.path(pad_data, "events_detected.csv"),
             row.names = FALSE)
-  
+
   cat("\nTotaal events in database:", nrow(gecombineerd), "\n")
   cat("events_detected.csv bijgewerkt\n")
 }
 
 cat("\n--- AI AGENT KLAAR ---", format(Sys.time(), "%d-%m-%Y %H:%M"), "\n")
-
-# Test op artikel 1
-titel <- alle_artikelen$title[1]
-cat("Artikel:", titel, "\n\n")
-
-result <- beoordeel_artikel(titel, ANTHROPIC_KEY)
-cat("is_esg:", result$is_esg, "\n")
-cat("bedrijf:", result$bedrijf, "\n")
-cat("pillar:", result$pillar, "\n")
-cat("severity:", result$severity, "\n")
-
-# Toon ruwe Claude response
-titel <- alle_artikelen$title[1]
-
-prompt <- paste0(
-  "Je bent een ESG analist. Beoordeel het volgende nieuwsartikel:\n\n",
-  "TITEL: ", titel, "\n\n",
-  "Antwoord ALLEEN in dit JSON formaat zonder extra tekst:\n",
-  "{\"is_esg\": true, \"bedrijf\": \"NAAM\", \"pillar\": \"G\", \"severity\": 2}"
-)
-
-body <- list(
-  model      = "claude-haiku-4-5-20251001",
-  max_tokens = 150,
-  messages   = list(list(role = "user", content = prompt))
-)
-
-resp <- POST(
-  "https://api.anthropic.com/v1/messages",
-  add_headers(
-    "x-api-key"         = ANTHROPIC_KEY,
-    "anthropic-version" = "2023-06-01",
-    "content-type"      = "application/json"
-  ),
-  body = toJSON(body, auto_unbox = TRUE),
-  timeout(15)
-)
-
-cat("Status:", status_code(resp), "\n")
-data  <- fromJSON(content(resp, "text", encoding = "UTF-8"))
-tekst <- data$content$text[1]
-cat("Ruwe response:\n", tekst, "\n")
-
-# Data kopiëren naar dashboard map
-file.copy(
-  from = "/Users/nabiel/Desktop/Controversy_trading/ESG_Alpha_Live/data/events_detected.csv",
-  to   = "/Users/nabiel/Desktop/Controversy_trading/ESG_Alpha_Live/dashboard/events_detected.csv",
-  overwrite = TRUE
-)
-
-# Dashboard herdeployen
-rsconnect::deployApp('/Users/nabiel/Desktop/Controversy_trading/ESG_Alpha_Live/dashboard')
-
-
-file.copy(
-  from = "/Users/nabiel/Desktop/Controversy_trading/ESG_Alpha_Live/data/events_detected.csv",
-  to   = "/Users/nabiel/Desktop/Controversy_trading/ESG_Alpha_Live/dashboard/events_detected.csv",
-  overwrite = TRUE
-)
-cat("Gekopieerd!\n")
-
-# Controleer
-df <- read.csv("/Users/nabiel/Desktop/Controversy_trading/ESG_Alpha_Live/dashboard/events_detected.csv")
-cat("Aantal events in dashboard map:", nrow(df), "\n")
-
-# Dashboard herdeployen
-rsconnect::deployApp('/Users/nabiel/Desktop/Controversy_trading/ESG_Alpha_Live/dashboard')
