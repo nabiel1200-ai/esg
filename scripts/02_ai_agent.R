@@ -10,7 +10,8 @@ library(jsonlite)
 
 ANTHROPIC_KEY <- Sys.getenv("ANTHROPIC_KEY")
 CURRENTS_KEY  <- Sys.getenv("CURRENTS_KEY")
-pad_data      <- "/Users/nabiel/Desktop/Controversy_trading/ESG_Alpha_Live/data"
+# Naar:
+pad_data <- "data"
 
 sp500 <- read.csv(file.path(pad_data, "sp500_tickers.csv"),
                   stringsAsFactors = FALSE)
