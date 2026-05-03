@@ -1,22 +1,20 @@
 # ============================================================
 # ESG_Alpha Live — 02_ai_agent.R
-# AI agent die nieuws beoordeelt via Claude
+# AI agent met Currents API + Google News RSS
 # Nabiel Mamnoen
 # ============================================================
 
 library(dplyr)
 library(httr)
 library(jsonlite)
+library(xml2)
 
 ANTHROPIC_KEY <- Sys.getenv("ANTHROPIC_KEY")
 CURRENTS_KEY  <- Sys.getenv("CURRENTS_KEY")
 pad_data      <- "data"
 
-sp500 <- read.csv(file.path(pad_data, "sp500_tickers.csv"),
-                  stringsAsFactors = FALSE)
-
 # ============================================================
-# STAP 1: NIEUWS OPHALEN VIA CURRENTS API
+# ZOEKQUERIES
 # ============================================================
 
 queries <- c(
@@ -32,6 +30,10 @@ queries <- c(
   "executive misconduct insider trading charged"
 )
 
+# ============================================================
+# BRON 1: CURRENTS API
+# ============================================================
+
 fetch_currents <- function(query, api_key) {
   query_enc <- utils::URLencode(query)
   url <- paste0(
@@ -43,25 +45,77 @@ fetch_currents <- function(query, api_key) {
   tryCatch({
     resp <- GET(url, timeout(10))
     if (status_code(resp) != 200) return(NULL)
-    data <- fromJSON(content(resp, "text", encoding = "UTF-8"))
+    data <- fromJSON(httr::content(resp, "text"))
     if (is.null(data$news) || nrow(data$news) == 0) return(NULL)
     data$news %>%
       select(title, published, url) %>%
-      mutate(pub_date = as.Date(substr(published, 1, 10))) %>%
+      mutate(
+        pub_date = as.Date(substr(published, 1, 10)),
+        source   = "currents"
+      ) %>%
       filter(!is.na(pub_date), !is.na(title)) %>%
-      select(title, pub_date, link = url)
+      select(title, pub_date, link = url, source)
   }, error = function(e) NULL)
 }
 
-cat("Nieuws ophalen...\n")
+# ============================================================
+# BRON 2: GOOGLE NEWS RSS
+# ============================================================
+
+fetch_google_news <- function(query) {
+  query_enc <- utils::URLencode(query)
+  url <- paste0(
+    "https://news.google.com/rss/search?q=",
+    query_enc,
+    "&hl=en-US&gl=US&ceid=US:en"
+  )
+  tryCatch({
+    resp <- GET(url, timeout(10))
+    if (status_code(resp) != 200) return(NULL)
+
+    xml   <- read_xml(httr::content(resp, "text"))
+    items <- xml_find_all(xml, "//item")
+    if (length(items) == 0) return(NULL)
+
+    titels <- xml_text(xml_find_first(items, "title"))
+    datums <- xml_text(xml_find_first(items, "pubDate"))
+    links  <- xml_text(xml_find_first(items, "link"))
+
+    data.frame(
+      title    = titels,
+      pub_date = as.Date(sub(" GMT| UTC", "", datums),
+                         format = "%a, %d %b %Y %H:%M:%S"),
+      link     = links,
+      source   = "google",
+      stringsAsFactors = FALSE
+    ) %>% filter(!is.na(pub_date), !is.na(title))
+
+  }, error = function(e) NULL)
+}
+
+# ============================================================
+# NIEUWS OPHALEN VAN BEIDE BRONNEN
+# ============================================================
+
+cat("Nieuws ophalen van Currents API + Google News...\n")
+
 all_articles <- list()
 
 for (q in queries) {
-  articles <- fetch_currents(q, CURRENTS_KEY)
-  if (!is.null(articles) && nrow(articles) > 0) {
-    articles <- articles %>% filter(pub_date >= Sys.Date() - 7)
-    if (nrow(articles) > 0) all_articles[[q]] <- articles
+  # Currents API
+  c_articles <- fetch_currents(q, CURRENTS_KEY)
+  if (!is.null(c_articles) && nrow(c_articles) > 0) {
+    c_articles <- c_articles %>% filter(pub_date >= Sys.Date() - 7)
+    if (nrow(c_articles) > 0) all_articles[[paste0("currents_", q)]] <- c_articles
   }
+
+  # Google News RSS
+  g_articles <- fetch_google_news(q)
+  if (!is.null(g_articles) && nrow(g_articles) > 0) {
+    g_articles <- g_articles %>% filter(pub_date >= Sys.Date() - 7)
+    if (nrow(g_articles) > 0) all_articles[[paste0("google_", q)]] <- g_articles
+  }
+
   Sys.sleep(0.5)
 }
 
@@ -70,13 +124,18 @@ if (length(all_articles) == 0) {
   quit(status = 0)
 }
 
+# Combineren en dedupliceren op titel
 alle_artikelen <- bind_rows(all_articles) %>%
-  distinct(title, .keep_all = TRUE)
+  distinct(title, .keep_all = TRUE) %>%
+  filter(pub_date >= Sys.Date() - 7)
 
-cat("Artikelen gevonden:", nrow(alle_artikelen), "\n\n")
+cat("Artikelen gevonden:\n")
+cat("  Totaal uniek:", nrow(alle_artikelen), "\n")
+cat("  Currents:    ", sum(alle_artikelen$source == "currents"), "\n")
+cat("  Google News: ", sum(alle_artikelen$source == "google"), "\n\n")
 
 # ============================================================
-# STAP 2: CLAUDE BEOORDEELT ELK ARTIKEL
+# CLAUDE BEOORDEELT ELK ARTIKEL
 # ============================================================
 
 beoordeel_artikel <- function(titel, api_key) {
@@ -85,11 +144,11 @@ beoordeel_artikel <- function(titel, api_key) {
     "TITEL: ", titel, "\n\n",
     "Beantwoord deze vragen:\n",
     "1. Gaat dit over een ESG controversy voor een beursgenoteerd bedrijf?\n",
-    "2. Welk bedrijf?\n",
+    "2. Welk bedrijf? Geef ook de beursticker als je die kent (bijv. AAPL, TSLA)\n",
     "3. Pillar: E (Environmental), S (Social), G (Governance), Cross (meerdere)\n",
     "4. Severity: 1 (laag), 2 (midden), 3 (hoog)\n\n",
     "Antwoord ALLEEN in dit JSON formaat zonder extra tekst:\n",
-    "{\"is_esg\": true, \"bedrijf\": \"NAAM\", \"pillar\": \"G\", \"severity\": 2}"
+    "{\"is_esg\": true, \"bedrijf\": \"NAAM\", \"ticker\": \"TICK\", \"pillar\": \"G\", \"severity\": 2}"
   )
 
   body <- list(
@@ -112,7 +171,7 @@ beoordeel_artikel <- function(titel, api_key) {
 
     if (status_code(resp) != 200) return(NULL)
 
-    data  <- fromJSON(content(resp, "text", encoding = "UTF-8"))
+    data  <- fromJSON(httr::content(resp, "text"))
     tekst <- data$content$text[1]
     tekst <- gsub("```json|```", "", tekst)
     tekst <- trimws(tekst)
@@ -126,7 +185,7 @@ beoordeel_artikel <- function(titel, api_key) {
 }
 
 # ============================================================
-# STAP 3: ALLE ARTIKELEN BEOORDELEN
+# ALLE ARTIKELEN BEOORDELEN
 # ============================================================
 
 cat("Claude beoordeelt", nrow(alle_artikelen), "artikelen...\n\n")
@@ -137,6 +196,7 @@ for (i in 1:nrow(alle_artikelen)) {
   titel    <- alle_artikelen$title[i]
   pub_date <- alle_artikelen$pub_date[i]
   link     <- alle_artikelen$link[i]
+  source   <- alle_artikelen$source[i]
 
   cat("  [", i, "/", nrow(alle_artikelen), "]", substr(titel, 1, 60), "...\n")
 
@@ -146,12 +206,16 @@ for (i in 1:nrow(alle_artikelen)) {
   if (!isTRUE(result$is_esg))                              { cat("    Geen ESG event\n"); Sys.sleep(0.5); next }
   if (is.null(result$bedrijf) || result$bedrijf == "null") { Sys.sleep(0.5); next }
 
+  ticker <- if (!is.null(result$ticker) && result$ticker != "null") result$ticker else NA
+
   event <- data.frame(
     isin       = NA,
     company    = result$bedrijf,
+    ticker     = ticker,
     title      = titel,
     pub_date   = pub_date,
     link       = link,
+    source     = source,
     pillar     = result$pillar,
     severity   = as.integer(pmin(result$severity, 3)),
     scraped_at = as.numeric(Sys.Date()),
@@ -159,13 +223,13 @@ for (i in 1:nrow(alle_artikelen)) {
   )
 
   nieuwe_events[[i]] <- event
-  cat("    ESG event:", result$bedrijf, "| Pillar:", result$pillar, "| Severity:", result$severity, "\n")
+  cat("    ESG event:", result$bedrijf, "(", ticker, ") | Pillar:", result$pillar, "| Severity:", result$severity, "\n")
 
   Sys.sleep(0.5)
 }
 
 # ============================================================
-# STAP 4: SAMENVOEGEN MET BESTAANDE EVENTS
+# SAMENVOEGEN MET BESTAANDE EVENTS
 # ============================================================
 
 if (length(nieuwe_events) == 0) {
@@ -175,13 +239,15 @@ if (length(nieuwe_events) == 0) {
 
   cat("\n=== NIEUWE EVENTS ===\n")
   cat("Gevonden:", nrow(nieuwe_df), "\n\n")
-  print(nieuwe_df %>% select(company, pub_date, pillar, severity, title))
+  print(nieuwe_df %>% select(company, ticker, pub_date, pillar, severity, title))
 
   bestaand_pad <- file.path(pad_data, "events_detected.csv")
 
   if (file.exists(bestaand_pad)) {
     bestaand <- read.csv(bestaand_pad, stringsAsFactors = FALSE) %>%
       mutate(pub_date = as.Date(pub_date))
+    if (!"ticker" %in% names(bestaand)) bestaand$ticker <- NA
+    if (!"source" %in% names(bestaand)) bestaand$source <- NA
     gecombineerd <- bind_rows(bestaand, nieuwe_df) %>%
       distinct(company, title, .keep_all = TRUE) %>%
       arrange(desc(pub_date))
