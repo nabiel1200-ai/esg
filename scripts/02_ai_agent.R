@@ -1,6 +1,6 @@
 # ============================================================
 # ESG_Alpha Live — 02_ai_agent.R
-# AI agent met verbeterde queries en false positive filter
+# AI agent met Reuters RSS, AP News RSS + Google News RSS
 # Nabiel Mamnoen
 # ============================================================
 
@@ -14,35 +14,7 @@ CURRENTS_KEY  <- Sys.getenv("CURRENTS_KEY")
 pad_data      <- "data"
 
 # ============================================================
-# ZOEKQUERIES — gefocust op echte ESG events
-# ============================================================
-
-queries <- c(
-  # Environmental
-  "company environmental fine EPA penalty 2026",
-  "oil spill chemical leak contamination company 2026",
-  "factory pollution air water violation fine 2026",
-  "climate environmental lawsuit corporation penalty 2026",
-
-  # Social
-  "workplace harassment discrimination settlement company 2026",
-  "corporate data breach privacy scandal users 2026",
-  "child labor supply chain violation company 2026",
-  "gender pay gap discrimination lawsuit company 2026",
-  "factory safety workers killed injured company 2026",
-
-  # Governance
-  "executive bribery corruption arrested company 2026",
-  "CEO fraud accounting scandal company 2026",
-  "insider trading executive charged company 2026",
-
-  # Cross
-  "company scandal misconduct fine court ruling 2026",
-  "corporate ESG controversy violation penalty 2026"
-)
-
-# ============================================================
-# FALSE POSITIVE KEYWORDS — advocatenkantoor berichten eruit
+# FALSE POSITIVE KEYWORDS
 # ============================================================
 
 false_positive_keywords <- c(
@@ -54,6 +26,13 @@ false_positive_keywords <- c(
   "hagens berman",
   "schall law firm",
   "gross law firm",
+  "glancy prongay",
+  "pomerantz law",
+  "gainey mcnamee",
+  "rosen law firm",
+  "faruqi & faruqi",
+  "levi & korsinsky",
+  "wolf haldenstein",
   "deadline alert",
   "investor notice",
   "shareholder alert",
@@ -67,52 +46,135 @@ false_positive_keywords <- c(
   "remind investors",
   "encourage investors",
   "urges investors",
-  # Overige false positives
+  "if you purchased shares",
+  "recover losses",
+  "pursuing claims",
+  "securities fraud lawsuit",
+  "fraud investigation with the schall",
+  "securities litigation",
+  "investor rights",
+  # Earnings / financieel
+  "quarterly earnings",
+  "q1 results", "q2 results", "q3 results", "q4 results",
+  "earnings per share",
+  "revenue guidance",
+  "raised its outlook",
+  "dividend declared",
+  "stock buyback",
+  "share repurchase",
+  # Overige ruis
   "deepwater horizon",
   "h-1b visa", "h1b visa",
   "premier league", "nfl", "nba",
   "bitcoin", "crypto", "blockchain",
-  "stock price", "earnings", "revenue", "quarterly results",
   "analyst", "upgrade", "downgrade", "price target",
   "merger", "acquisition", "ipo",
-  "may be fak", "may be fake",
   "how to claim", "how to file a claim",
   "who qualifies", "here's how to",
   "what to know about"
 )
 
-# ============================================================
-# BRON 1: CURRENTS API (met beschrijving)
-# ============================================================
-
-fetch_currents <- function(query, api_key) {
-  query_enc <- utils::URLencode(query)
-  url <- paste0(
-    "https://api.currentsapi.services/v1/search?",
-    "keywords=", query_enc,
-    "&language=en",
-    "&apiKey=", api_key
-  )
-  tryCatch({
-    resp <- GET(url, timeout(10))
-    if (status_code(resp) != 200) return(NULL)
-    data <- fromJSON(httr::content(resp, "text"))
-    if (is.null(data$news) || nrow(data$news) == 0) return(NULL)
-    data$news %>%
-      select(title, description, published, url) %>%
-      mutate(
-        pub_date    = as.Date(substr(published, 1, 10)),
-        description = ifelse(is.na(description), "", substr(description, 1, 300)),
-        source      = "currents"
-      ) %>%
-      filter(!is.na(pub_date), !is.na(title)) %>%
-      select(title, description, pub_date, link = url, source)
-  }, error = function(e) NULL)
+is_false_positive <- function(title) {
+  t_lower <- tolower(title)
+  any(sapply(false_positive_keywords, function(k) grepl(k, t_lower, fixed = TRUE)))
 }
 
 # ============================================================
-# BRON 2: GOOGLE NEWS RSS
+# BRON 1: REUTERS RSS (gratis, geen key)
 # ============================================================
+
+reuters_feeds <- c(
+  "https://feeds.reuters.com/reuters/businessNews",
+  "https://feeds.reuters.com/reuters/companyNews",
+  "https://feeds.reuters.com/reuters/environment"
+)
+
+fetch_reuters <- function(feed_url) {
+  tryCatch({
+    resp <- GET(feed_url, timeout(15))
+    if (status_code(resp) != 200) return(NULL)
+
+    xml   <- read_xml(content(resp, "text", encoding = "UTF-8"))
+    items <- xml_find_all(xml, "//item")
+    if (length(items) == 0) return(NULL)
+
+    titels <- xml_text(xml_find_first(items, "title"))
+    datums <- xml_text(xml_find_first(items, "pubDate"))
+    links  <- xml_text(xml_find_first(items, "link"))
+    descr  <- xml_text(xml_find_first(items, "description"))
+
+    data.frame(
+      title       = titels,
+      description = substr(ifelse(is.na(descr), "", descr), 1, 300),
+      pub_date    = as.Date(sub(" GMT| UTC", "", datums),
+                            format = "%a, %d %b %Y %H:%M:%S"),
+      link        = links,
+      source      = "reuters",
+      stringsAsFactors = FALSE
+    ) %>% filter(!is.na(pub_date), !is.na(title), title != "")
+
+  }, error = function(e) {
+    cat("  Reuters fout:", conditionMessage(e), "\n")
+    NULL
+  })
+}
+
+# ============================================================
+# BRON 2: AP NEWS RSS (gratis, geen key)
+# ============================================================
+
+ap_feeds <- c(
+  "https://rsshub.app/apnews/topics/business",
+  "https://rsshub.app/apnews/topics/climate-environment"
+)
+
+fetch_ap <- function(feed_url) {
+  tryCatch({
+    resp <- GET(feed_url, timeout(15))
+    if (status_code(resp) != 200) return(NULL)
+
+    xml   <- read_xml(content(resp, "text", encoding = "UTF-8"))
+    items <- xml_find_all(xml, "//item")
+    if (length(items) == 0) return(NULL)
+
+    titels <- xml_text(xml_find_first(items, "title"))
+    datums <- xml_text(xml_find_first(items, "pubDate"))
+    links  <- xml_text(xml_find_first(items, "link"))
+    descr  <- xml_text(xml_find_first(items, "description"))
+
+    data.frame(
+      title       = titels,
+      description = substr(ifelse(is.na(descr), "", descr), 1, 300),
+      pub_date    = as.Date(sub(" GMT| UTC", "", datums),
+                            format = "%a, %d %b %Y %H:%M:%S"),
+      link        = links,
+      source      = "ap_news",
+      stringsAsFactors = FALSE
+    ) %>% filter(!is.na(pub_date), !is.na(title), title != "")
+
+  }, error = function(e) {
+    cat("  AP News fout:", conditionMessage(e), "\n")
+    NULL
+  })
+}
+
+# ============================================================
+# BRON 3: GOOGLE NEWS RSS (gerichte queries)
+# ============================================================
+
+google_queries <- c(
+  "company environmental fine EPA penalty",
+  "oil spill chemical leak contamination company",
+  "factory pollution air water violation fine",
+  "workplace harassment discrimination settlement company",
+  "corporate data breach privacy scandal",
+  "child labor supply chain violation company",
+  "factory safety workers killed injured company",
+  "executive bribery corruption arrested company",
+  "CEO fraud accounting scandal company",
+  "insider trading executive charged company",
+  "company scandal misconduct fine court ruling"
+)
 
 fetch_google_news <- function(query) {
   query_enc <- utils::URLencode(query)
@@ -125,7 +187,7 @@ fetch_google_news <- function(query) {
     resp <- GET(url, timeout(10))
     if (status_code(resp) != 200) return(NULL)
 
-    xml   <- read_xml(httr::content(resp, "text"))
+    xml   <- read_xml(content(resp, "text", encoding = "UTF-8"))
     items <- xml_find_all(xml, "//item")
     if (length(items) == 0) return(NULL)
 
@@ -141,32 +203,94 @@ fetch_google_news <- function(query) {
       link        = links,
       source      = "google",
       stringsAsFactors = FALSE
-    ) %>% filter(!is.na(pub_date), !is.na(title))
+    ) %>% filter(!is.na(pub_date), !is.na(title), title != "")
 
   }, error = function(e) NULL)
 }
 
 # ============================================================
-# NIEUWS OPHALEN
+# BRON 4: CURRENTS API
 # ============================================================
 
-cat("Nieuws ophalen van Currents API + Google News...\n")
+currents_queries <- c(
+  "company environmental fine EPA penalty 2026",
+  "oil spill chemical leak contamination company 2026",
+  "workplace harassment discrimination settlement company 2026",
+  "corporate data breach privacy scandal users 2026",
+  "executive bribery corruption arrested company 2026",
+  "company pollution toxic waste dumping 2026",
+  "corporate human rights violation labor abuse 2026"
+)
+
+fetch_currents <- function(query, api_key) {
+  query_enc <- utils::URLencode(query)
+  url <- paste0(
+    "https://api.currentsapi.services/v1/search?",
+    "keywords=", query_enc,
+    "&language=en",
+    "&apiKey=", api_key
+  )
+  tryCatch({
+    resp <- GET(url, timeout(10))
+    if (status_code(resp) != 200) return(NULL)
+    data <- fromJSON(content(resp, "text"))
+    if (is.null(data$news) || nrow(data$news) == 0) return(NULL)
+    data$news %>%
+      select(title, description, published, url) %>%
+      mutate(
+        pub_date    = as.Date(substr(published, 1, 10)),
+        description = ifelse(is.na(description), "", substr(description, 1, 300)),
+        source      = "currents"
+      ) %>%
+      filter(!is.na(pub_date), !is.na(title)) %>%
+      select(title, description, pub_date, link = url, source)
+  }, error = function(e) NULL)
+}
+
+# ============================================================
+# STAP 1: NIEUWS OPHALEN
+# ============================================================
+
+cat("=== ESG_Alpha AI Agent gestart ===\n")
+cat("Tijdstip:", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "\n\n")
 
 all_articles <- list()
 
-for (q in queries) {
-  c_articles <- fetch_currents(q, CURRENTS_KEY)
-  if (!is.null(c_articles) && nrow(c_articles) > 0) {
-    c_articles <- c_articles %>% filter(pub_date >= Sys.Date() - 7)
-    if (nrow(c_articles) > 0) all_articles[[paste0("currents_", q)]] <- c_articles
-  }
+# Reuters
+cat("Reuters RSS ophalen...\n")
+for (feed in reuters_feeds) {
+  result <- fetch_reuters(feed)
+  if (!is.null(result)) all_articles[[paste0("reuters_", feed)]] <- result
+  Sys.sleep(0.5)
+}
 
-  g_articles <- fetch_google_news(q)
-  if (!is.null(g_articles) && nrow(g_articles) > 0) {
-    g_articles <- g_articles %>% filter(pub_date >= Sys.Date() - 7)
-    if (nrow(g_articles) > 0) all_articles[[paste0("google_", q)]] <- g_articles
-  }
+# AP News
+cat("AP News RSS ophalen...\n")
+for (feed in ap_feeds) {
+  result <- fetch_ap(feed)
+  if (!is.null(result)) all_articles[[paste0("ap_", feed)]] <- result
+  Sys.sleep(0.5)
+}
 
+# Google News
+cat("Google News RSS ophalen...\n")
+for (q in google_queries) {
+  result <- fetch_google_news(q)
+  if (!is.null(result)) {
+    result <- result %>% filter(pub_date >= Sys.Date() - 7)
+    if (nrow(result) > 0) all_articles[[paste0("google_", q)]] <- result
+  }
+  Sys.sleep(0.5)
+}
+
+# Currents
+cat("Currents API ophalen...\n")
+for (q in currents_queries) {
+  result <- fetch_currents(q, CURRENTS_KEY)
+  if (!is.null(result)) {
+    result <- result %>% filter(pub_date >= Sys.Date() - 7)
+    if (nrow(result) > 0) all_articles[[paste0("currents_", q)]] <- result
+  }
   Sys.sleep(0.5)
 }
 
@@ -175,19 +299,21 @@ if (length(all_articles) == 0) {
   quit(status = 0)
 }
 
-# Combineren, dedupliceren en false positives eruit
+# ============================================================
+# STAP 2: COMBINEREN + FALSE POSITIVES ERUIT
+# ============================================================
+
 alle_artikelen <- bind_rows(all_articles) %>%
   distinct(title, .keep_all = TRUE) %>%
   filter(pub_date >= Sys.Date() - 7) %>%
-  filter(!sapply(title, function(t) {
-    t_lower <- tolower(t)
-    any(sapply(false_positive_keywords, function(k) grepl(k, t_lower, fixed = TRUE)))
-  }))
+  filter(!sapply(title, is_false_positive))
 
-cat("Artikelen gevonden na filtering:\n")
-cat("  Totaal uniek:", nrow(alle_artikelen), "\n")
-cat("  Currents:    ", sum(alle_artikelen$source == "currents"), "\n")
-cat("  Google News: ", sum(alle_artikelen$source == "google"), "\n\n")
+cat("\nArtikelen na filtering:\n")
+cat("  Totaal uniek: ", nrow(alle_artikelen), "\n")
+cat("  Reuters:      ", sum(alle_artikelen$source == "reuters"), "\n")
+cat("  AP News:      ", sum(alle_artikelen$source == "ap_news"), "\n")
+cat("  Google News:  ", sum(alle_artikelen$source == "google"), "\n")
+cat("  Currents:     ", sum(alle_artikelen$source == "currents"), "\n\n")
 
 if (nrow(alle_artikelen) == 0) {
   cat("Geen artikelen over na filtering\n")
@@ -195,7 +321,7 @@ if (nrow(alle_artikelen) == 0) {
 }
 
 # ============================================================
-# CLAUDE BEOORDEELT ELK ARTIKEL
+# STAP 3: CLAUDE BEOORDEELT ELK ARTIKEL
 # ============================================================
 
 beoordeel_artikel <- function(titel, beschrijving, api_key) {
@@ -245,7 +371,7 @@ beoordeel_artikel <- function(titel, beschrijving, api_key) {
 
     if (status_code(resp) != 200) return(NULL)
 
-    data  <- fromJSON(httr::content(resp, "text"))
+    data  <- fromJSON(content(resp, "text"))
     tekst <- data$content$text[1]
     tekst <- gsub("```json|```", "", tekst)
     tekst <- trimws(tekst)
@@ -259,7 +385,7 @@ beoordeel_artikel <- function(titel, beschrijving, api_key) {
 }
 
 # ============================================================
-# ALLE ARTIKELEN BEOORDELEN
+# STAP 4: ALLE ARTIKELEN BEOORDELEN
 # ============================================================
 
 cat("Claude beoordeelt", nrow(alle_artikelen), "artikelen...\n\n")
@@ -306,7 +432,7 @@ for (i in 1:nrow(alle_artikelen)) {
 }
 
 # ============================================================
-# SAMENVOEGEN MET BESTAANDE EVENTS
+# STAP 5: SAMENVOEGEN MET BESTAANDE EVENTS
 # ============================================================
 
 if (length(nieuwe_events) == 0) {
