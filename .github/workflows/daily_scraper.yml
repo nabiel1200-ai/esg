@@ -10,7 +10,8 @@ permissions:
 
 jobs:
   scrape:
-    runs-on: ubuntu-latest
+    # Door:
+  runs-on: self-hosted
 
     steps:
       - name: Checkout repository
