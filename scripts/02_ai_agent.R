@@ -146,21 +146,25 @@ beoordeel_artikel <- function(titel, beschrijving, api_key) {
     ""
   }
 
-  prompt <- paste0(
-    "Je bent een ESG analist. Beoordeel het volgende nieuwsartikel:\n\n",
-    "TITEL: ", titel, "\n\n",
-    context,
-    "Beantwoord deze vragen:\n",
-    "1. Gaat dit over een ESG controversy voor een beursgenoteerd bedrijf?\n",
-    "2. Welk bedrijf? Geef ook de beursticker als je die kent\n",
-    "3. Pillar: E (Environmental), S (Social), G (Governance), Cross (meerdere)\n",
-    "4. Severity: 1 (laag), 2 (midden), 3 (hoog)\n",
-    "   - Severity 3: crimineel, miljarden, class action, federaal onderzoek\n",
-    "   - Severity 2: rechtszaak, boete, onderzoek, settlement\n",
-    "   - Severity 1: klacht, beschuldiging, kleine overtreding\n\n",
-    "Antwoord ALLEEN in dit JSON formaat zonder extra tekst:\n",
-    "{\"is_esg\": true, \"bedrijf\": \"NAAM\", \"ticker\": \"TICK\", \"pillar\": \"G\", \"severity\": 2}"
-  )
+ prompt <- paste0(
+  "Je bent een ESG analist. Beoordeel het volgende nieuwsartikel:\n\n",
+  "TITEL: ", titel, "\n\n",
+  context,
+  "Beantwoord deze vragen:\n",
+  "1. Gaat dit over een ESG controversy voor een BEURSGENOTEERD bedrijf?\n",
+  "   - Alleen bedrijven die op een beurs verhandeld worden (NYSE, NASDAQ, etc.)\n",
+  "   - Overheidsinstanties, NGOs en privébedrijven zijn GEEN ESG events\n",
+  "2. Welk beursgenoteerd bedrijf? Geef de officiële bedrijfsnaam\n",
+  "3. Wat is de beursticker? (bijv. RILY voor B. Riley, PFE voor Pfizer)\n",
+  "   - Als je de ticker niet zeker weet, geef je beste inschatting\n",
+  "4. Pillar: E (Environmental), S (Social), G (Governance), Cross (meerdere)\n",
+  "5. Severity: 1 (laag), 2 (midden), 3 (hoog)\n",
+  "   - Severity 3: crimineel, miljarden, class action, federaal onderzoek\n",
+  "   - Severity 2: rechtszaak, boete, onderzoek, settlement\n",
+  "   - Severity 1: klacht, beschuldiging, kleine overtreding\n\n",
+  "Antwoord ALLEEN in dit JSON formaat zonder extra tekst:\n",
+  "{\"is_esg\": true, \"bedrijf\": \"NAAM\", \"ticker\": \"TICK\", \"pillar\": \"G\", \"severity\": 2}"
+)
 
   body <- list(
     model      = "claude-haiku-4-5-20251001",
