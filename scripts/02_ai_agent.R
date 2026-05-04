@@ -1,6 +1,6 @@
 # ============================================================
 # ESG_Alpha Live — 02_ai_agent.R
-# AI agent met Currents API + Google News RSS + beschrijving
+# AI agent met verbeterde queries en false positive filter
 # Nabiel Mamnoen
 # ============================================================
 
@@ -14,20 +14,71 @@ CURRENTS_KEY  <- Sys.getenv("CURRENTS_KEY")
 pad_data      <- "data"
 
 # ============================================================
-# ZOEKQUERIES
+# ZOEKQUERIES — gefocust op echte ESG events
 # ============================================================
 
 queries <- c(
-  "SEC investigation fraud securities lawsuit",
-  "environmental violation EPA fine pollution",
-  "workplace harassment discrimination lawsuit settlement",
-  "data breach privacy violation class action",
-  "DOJ antitrust bribery corruption fine",
-  "shareholder class action securities fraud",
-  "labor violation wage theft human rights",
-  "corporate misconduct penalty court ruling",
-  "oil spill toxic contamination company",
-  "executive misconduct insider trading charged"
+  # Environmental
+  "company environmental fine EPA penalty 2026",
+  "oil spill chemical leak contamination company 2026",
+  "factory pollution air water violation fine 2026",
+  "climate environmental lawsuit corporation penalty 2026",
+
+  # Social
+  "workplace harassment discrimination settlement company 2026",
+  "corporate data breach privacy scandal users 2026",
+  "child labor supply chain violation company 2026",
+  "gender pay gap discrimination lawsuit company 2026",
+  "factory safety workers killed injured company 2026",
+
+  # Governance
+  "executive bribery corruption arrested company 2026",
+  "CEO fraud accounting scandal company 2026",
+  "insider trading executive charged company 2026",
+
+  # Cross
+  "company scandal misconduct fine court ruling 2026",
+  "corporate ESG controversy violation penalty 2026"
+)
+
+# ============================================================
+# FALSE POSITIVE KEYWORDS — advocatenkantoor berichten eruit
+# ============================================================
+
+false_positive_keywords <- c(
+  # Advocatenkantoor berichten
+  "investors have opportunity to lead",
+  "shareholders who lost money",
+  "claimsfiler reminds",
+  "bronstein gewirtz",
+  "hagens berman",
+  "schall law firm",
+  "gross law firm",
+  "deadline alert",
+  "investor notice",
+  "shareholder alert",
+  "law offices of",
+  "investors urged to contact",
+  "investors may seek to lead",
+  "investors with losses",
+  "lead plaintiff deadline",
+  "securities class action",
+  "class action lawsuit - investors",
+  "remind investors",
+  "encourage investors",
+  "urges investors",
+  # Overige false positives
+  "deepwater horizon",
+  "h-1b visa", "h1b visa",
+  "premier league", "nfl", "nba",
+  "bitcoin", "crypto", "blockchain",
+  "stock price", "earnings", "revenue", "quarterly results",
+  "analyst", "upgrade", "downgrade", "price target",
+  "merger", "acquisition", "ipo",
+  "may be fak", "may be fake",
+  "how to claim", "how to file a claim",
+  "who qualifies", "here's how to",
+  "what to know about"
 )
 
 # ============================================================
@@ -60,7 +111,7 @@ fetch_currents <- function(query, api_key) {
 }
 
 # ============================================================
-# BRON 2: GOOGLE NEWS RSS (geen beschrijving beschikbaar)
+# BRON 2: GOOGLE NEWS RSS
 # ============================================================
 
 fetch_google_news <- function(query) {
@@ -96,7 +147,7 @@ fetch_google_news <- function(query) {
 }
 
 # ============================================================
-# NIEUWS OPHALEN VAN BEIDE BRONNEN
+# NIEUWS OPHALEN
 # ============================================================
 
 cat("Nieuws ophalen van Currents API + Google News...\n")
@@ -124,47 +175,55 @@ if (length(all_articles) == 0) {
   quit(status = 0)
 }
 
+# Combineren, dedupliceren en false positives eruit
 alle_artikelen <- bind_rows(all_articles) %>%
   distinct(title, .keep_all = TRUE) %>%
-  filter(pub_date >= Sys.Date() - 7)
+  filter(pub_date >= Sys.Date() - 7) %>%
+  filter(!sapply(title, function(t) {
+    t_lower <- tolower(t)
+    any(sapply(false_positive_keywords, function(k) grepl(k, t_lower, fixed = TRUE)))
+  }))
 
-cat("Artikelen gevonden:\n")
+cat("Artikelen gevonden na filtering:\n")
 cat("  Totaal uniek:", nrow(alle_artikelen), "\n")
 cat("  Currents:    ", sum(alle_artikelen$source == "currents"), "\n")
 cat("  Google News: ", sum(alle_artikelen$source == "google"), "\n\n")
 
+if (nrow(alle_artikelen) == 0) {
+  cat("Geen artikelen over na filtering\n")
+  quit(status = 0)
+}
+
 # ============================================================
-# CLAUDE BEOORDEELT ELK ARTIKEL (met beschrijving)
+# CLAUDE BEOORDEELT ELK ARTIKEL
 # ============================================================
 
 beoordeel_artikel <- function(titel, beschrijving, api_key) {
 
-  # Beschrijving toevoegen als die beschikbaar is
   context <- if (nchar(trimws(beschrijving)) > 0) {
     paste0("BESCHRIJVING: ", beschrijving, "\n\n")
   } else {
     ""
   }
 
- prompt <- paste0(
-  "Je bent een ESG analist. Beoordeel het volgende nieuwsartikel:\n\n",
-  "TITEL: ", titel, "\n\n",
-  context,
-  "Beantwoord deze vragen:\n",
-  "1. Gaat dit over een ESG controversy voor een BEURSGENOTEERD bedrijf?\n",
-  "   - Alleen bedrijven die op een beurs verhandeld worden (NYSE, NASDAQ, etc.)\n",
-  "   - Overheidsinstanties, NGOs en privébedrijven zijn GEEN ESG events\n",
-  "2. Welk beursgenoteerd bedrijf? Geef de officiële bedrijfsnaam\n",
-  "3. Wat is de beursticker? (bijv. RILY voor B. Riley, PFE voor Pfizer)\n",
-  "   - Als je de ticker niet zeker weet, geef je beste inschatting\n",
-  "4. Pillar: E (Environmental), S (Social), G (Governance), Cross (meerdere)\n",
-  "5. Severity: 1 (laag), 2 (midden), 3 (hoog)\n",
-  "   - Severity 3: crimineel, miljarden, class action, federaal onderzoek\n",
-  "   - Severity 2: rechtszaak, boete, onderzoek, settlement\n",
-  "   - Severity 1: klacht, beschuldiging, kleine overtreding\n\n",
-  "Antwoord ALLEEN in dit JSON formaat zonder extra tekst:\n",
-  "{\"is_esg\": true, \"bedrijf\": \"NAAM\", \"ticker\": \"TICK\", \"pillar\": \"G\", \"severity\": 2}"
-)
+  prompt <- paste0(
+    "Je bent een ESG analist. Beoordeel het volgende nieuwsartikel:\n\n",
+    "TITEL: ", titel, "\n\n",
+    context,
+    "Beantwoord deze vragen:\n",
+    "1. Gaat dit over een ESG controversy voor een BEURSGENOTEERD bedrijf?\n",
+    "   - Alleen bedrijven die op een beurs verhandeld worden (NYSE, NASDAQ, AEX etc.)\n",
+    "   - Overheidsinstanties, NGOs en privébedrijven tellen NIET\n",
+    "2. Welk beursgenoteerd bedrijf?\n",
+    "3. Wat is de beursticker? (bijv. AAPL, SHEL, ASML)\n",
+    "4. Pillar: E (Environmental), S (Social), G (Governance), Cross (meerdere)\n",
+    "5. Severity: 1 (laag), 2 (midden), 3 (hoog)\n",
+    "   - Severity 3: crimineel, miljarden, doden, federaal onderzoek\n",
+    "   - Severity 2: boete, rechtszaak, settlement, onderzoek\n",
+    "   - Severity 1: klacht, beschuldiging, kleine overtreding\n\n",
+    "Antwoord ALLEEN in dit JSON formaat zonder extra tekst:\n",
+    "{\"is_esg\": true, \"bedrijf\": \"NAAM\", \"ticker\": \"TICK\", \"pillar\": \"E\", \"severity\": 2}"
+  )
 
   body <- list(
     model      = "claude-haiku-4-5-20251001",
@@ -208,11 +267,11 @@ cat("Claude beoordeelt", nrow(alle_artikelen), "artikelen...\n\n")
 nieuwe_events <- list()
 
 for (i in 1:nrow(alle_artikelen)) {
-  titel       <- alle_artikelen$title[i]
+  titel        <- alle_artikelen$title[i]
   beschrijving <- alle_artikelen$description[i]
-  pub_date    <- alle_artikelen$pub_date[i]
-  link        <- alle_artikelen$link[i]
-  source      <- alle_artikelen$source[i]
+  pub_date     <- alle_artikelen$pub_date[i]
+  link         <- alle_artikelen$link[i]
+  source       <- alle_artikelen$source[i]
 
   cat("  [", i, "/", nrow(alle_artikelen), "]", substr(titel, 1, 60), "...\n")
 
