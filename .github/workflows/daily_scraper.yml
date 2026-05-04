@@ -10,7 +10,6 @@ permissions:
 
 jobs:
   scrape:
-    # Door:
   runs-on: self-hosted
 
     steps:
