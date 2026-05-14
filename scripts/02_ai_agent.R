@@ -72,6 +72,11 @@ false_positive_keywords <- c(
   "how to claim", "how to file a claim",
   "who qualifies", "here's how to",
   "what to know about"
+  "investor alert",
+"deadline alert",
+"have opportunity to join",
+"urges former",
+"important notice to"
 )
 
 is_false_positive <- function(title) {
