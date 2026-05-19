@@ -10,7 +10,6 @@ library(jsonlite)
 library(xml2)
 
 ANTHROPIC_KEY <- Sys.getenv("ANTHROPIC_KEY")
-CURRENTS_KEY  <- Sys.getenv("CURRENTS_KEY")
 pad_data      <- "data"
 
 # ============================================================
@@ -20,6 +19,7 @@ pad_data      <- "data"
 false_positive_keywords <- c(
   # Advocatenkantoor berichten
   "investors have opportunity to lead",
+  "investors have opportunity to join",
   "shareholders who lost money",
   "claimsfiler reminds",
   "bronstein gewirtz",
@@ -33,26 +33,32 @@ false_positive_keywords <- c(
   "faruqi & faruqi",
   "levi & korsinsky",
   "wolf haldenstein",
+  "law offices of",
   "deadline alert",
+  "investor alert",
   "investor notice",
   "shareholder alert",
-  "law offices of",
   "investors urged to contact",
   "investors may seek to lead",
   "investors with losses",
   "lead plaintiff deadline",
   "securities class action",
-  "class action lawsuit - investors",
+  "class action lawsuit",
+  "securities fraud lawsuit",
+  "fraud investigation",
   "remind investors",
   "encourage investors",
   "urges investors",
+  "urges former",
   "if you purchased shares",
   "recover losses",
   "pursuing claims",
-  "securities fraud lawsuit",
-  "fraud investigation with the schall",
   "securities litigation",
   "investor rights",
+  "important notice to",
+  "notice to long-term shareholders",
+  "shareholders who purchased",
+  "investors who purchased",
   # Earnings / financieel
   "quarterly earnings",
   "q1 results", "q2 results", "q3 results", "q4 results",
@@ -63,20 +69,12 @@ false_positive_keywords <- c(
   "stock buyback",
   "share repurchase",
   # Overige ruis
-  "deepwater horizon",
   "h-1b visa", "h1b visa",
   "premier league", "nfl", "nba",
   "bitcoin", "crypto", "blockchain",
   "analyst", "upgrade", "downgrade", "price target",
-  "merger", "acquisition", "ipo",
   "how to claim", "how to file a claim",
-  "who qualifies", "here's how to",
-  "what to know about"
-  "investor alert",
-"deadline alert",
-"have opportunity to join",
-"urges former",
-"important notice to"
+  "who qualifies", "here's how to"
 )
 
 is_false_positive <- function(title) {
@@ -98,26 +96,21 @@ fetch_reuters <- function(feed_url) {
   tryCatch({
     resp <- GET(feed_url, timeout(15))
     if (status_code(resp) != 200) return(NULL)
-
     xml   <- read_xml(content(resp, "text", encoding = "UTF-8"))
     items <- xml_find_all(xml, "//item")
     if (length(items) == 0) return(NULL)
-
     titels <- xml_text(xml_find_first(items, "title"))
     datums <- xml_text(xml_find_first(items, "pubDate"))
     links  <- xml_text(xml_find_first(items, "link"))
     descr  <- xml_text(xml_find_first(items, "description"))
-
     data.frame(
       title       = titels,
       description = substr(ifelse(is.na(descr), "", descr), 1, 300),
-      pub_date    = as.Date(sub(" GMT| UTC", "", datums),
-                            format = "%a, %d %b %Y %H:%M:%S"),
+      pub_date    = as.Date(sub(" GMT| UTC", "", datums), format = "%a, %d %b %Y %H:%M:%S"),
       link        = links,
       source      = "reuters",
       stringsAsFactors = FALSE
     ) %>% filter(!is.na(pub_date), !is.na(title), title != "")
-
   }, error = function(e) {
     cat("  Reuters fout:", conditionMessage(e), "\n")
     NULL
@@ -137,26 +130,21 @@ fetch_ap <- function(feed_url) {
   tryCatch({
     resp <- GET(feed_url, timeout(15))
     if (status_code(resp) != 200) return(NULL)
-
     xml   <- read_xml(content(resp, "text", encoding = "UTF-8"))
     items <- xml_find_all(xml, "//item")
     if (length(items) == 0) return(NULL)
-
     titels <- xml_text(xml_find_first(items, "title"))
     datums <- xml_text(xml_find_first(items, "pubDate"))
     links  <- xml_text(xml_find_first(items, "link"))
     descr  <- xml_text(xml_find_first(items, "description"))
-
     data.frame(
       title       = titels,
       description = substr(ifelse(is.na(descr), "", descr), 1, 300),
-      pub_date    = as.Date(sub(" GMT| UTC", "", datums),
-                            format = "%a, %d %b %Y %H:%M:%S"),
+      pub_date    = as.Date(sub(" GMT| UTC", "", datums), format = "%a, %d %b %Y %H:%M:%S"),
       link        = links,
       source      = "ap_news",
       stringsAsFactors = FALSE
     ) %>% filter(!is.na(pub_date), !is.na(title), title != "")
-
   }, error = function(e) {
     cat("  AP News fout:", conditionMessage(e), "\n")
     NULL
@@ -170,85 +158,33 @@ fetch_ap <- function(feed_url) {
 google_queries <- c(
   "company environmental fine EPA penalty",
   "oil spill chemical leak contamination company",
-  "factory pollution air water violation fine",
   "workplace harassment discrimination settlement company",
   "corporate data breach privacy scandal",
-  "child labor supply chain violation company",
-  "factory safety workers killed injured company",
   "executive bribery corruption arrested company",
-  "CEO fraud accounting scandal company",
-  "insider trading executive charged company",
-  "company scandal misconduct fine court ruling"
+  "factory safety workers killed injured company",
+  "company pollution toxic waste fine"
 )
 
 fetch_google_news <- function(query) {
   query_enc <- utils::URLencode(query)
-  url <- paste0(
-    "https://news.google.com/rss/search?q=",
-    query_enc,
-    "&hl=en-US&gl=US&ceid=US:en"
-  )
+  url <- paste0("https://news.google.com/rss/search?q=", query_enc, "&hl=en-US&gl=US&ceid=US:en")
   tryCatch({
     resp <- GET(url, timeout(10))
     if (status_code(resp) != 200) return(NULL)
-
     xml   <- read_xml(content(resp, "text", encoding = "UTF-8"))
     items <- xml_find_all(xml, "//item")
     if (length(items) == 0) return(NULL)
-
     titels <- xml_text(xml_find_first(items, "title"))
     datums <- xml_text(xml_find_first(items, "pubDate"))
     links  <- xml_text(xml_find_first(items, "link"))
-
     data.frame(
       title       = titels,
       description = "",
-      pub_date    = as.Date(sub(" GMT| UTC", "", datums),
-                            format = "%a, %d %b %Y %H:%M:%S"),
+      pub_date    = as.Date(sub(" GMT| UTC", "", datums), format = "%a, %d %b %Y %H:%M:%S"),
       link        = links,
       source      = "google",
       stringsAsFactors = FALSE
     ) %>% filter(!is.na(pub_date), !is.na(title), title != "")
-
-  }, error = function(e) NULL)
-}
-
-# ============================================================
-# BRON 4: CURRENTS API
-# ============================================================
-
-currents_queries <- c(
-  "company environmental fine EPA penalty 2026",
-  "oil spill chemical leak contamination company 2026",
-  "workplace harassment discrimination settlement company 2026",
-  "corporate data breach privacy scandal users 2026",
-  "executive bribery corruption arrested company 2026",
-  "company pollution toxic waste dumping 2026",
-  "corporate human rights violation labor abuse 2026"
-)
-
-fetch_currents <- function(query, api_key) {
-  query_enc <- utils::URLencode(query)
-  url <- paste0(
-    "https://api.currentsapi.services/v1/search?",
-    "keywords=", query_enc,
-    "&language=en",
-    "&apiKey=", api_key
-  )
-  tryCatch({
-    resp <- GET(url, timeout(10))
-    if (status_code(resp) != 200) return(NULL)
-    data <- fromJSON(content(resp, "text"))
-    if (is.null(data$news) || nrow(data$news) == 0) return(NULL)
-    data$news %>%
-      select(title, description, published, url) %>%
-      mutate(
-        pub_date    = as.Date(substr(published, 1, 10)),
-        description = ifelse(is.na(description), "", substr(description, 1, 300)),
-        source      = "currents"
-      ) %>%
-      filter(!is.na(pub_date), !is.na(title)) %>%
-      select(title, description, pub_date, link = url, source)
   }, error = function(e) NULL)
 }
 
@@ -261,7 +197,6 @@ cat("Tijdstip:", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "\n\n")
 
 all_articles <- list()
 
-# Reuters
 cat("Reuters RSS ophalen...\n")
 for (feed in reuters_feeds) {
   result <- fetch_reuters(feed)
@@ -269,7 +204,6 @@ for (feed in reuters_feeds) {
   Sys.sleep(0.5)
 }
 
-# AP News
 cat("AP News RSS ophalen...\n")
 for (feed in ap_feeds) {
   result <- fetch_ap(feed)
@@ -277,7 +211,6 @@ for (feed in ap_feeds) {
   Sys.sleep(0.5)
 }
 
-# Google News
 cat("Google News RSS ophalen...\n")
 for (q in google_queries) {
   result <- fetch_google_news(q)
@@ -285,18 +218,7 @@ for (q in google_queries) {
     result <- result %>% filter(pub_date >= Sys.Date() - 7)
     if (nrow(result) > 0) all_articles[[paste0("google_", q)]] <- result
   }
-  Sys.sleep(0.5)
-}
-
-# Currents
-cat("Currents API ophalen...\n")
-for (q in currents_queries) {
-  result <- fetch_currents(q, CURRENTS_KEY)
-  if (!is.null(result)) {
-    result <- result %>% filter(pub_date >= Sys.Date() - 7)
-    if (nrow(result) > 0) all_articles[[paste0("currents_", q)]] <- result
-  }
-  Sys.sleep(0.5)
+  Sys.sleep(1)
 }
 
 if (length(all_articles) == 0) {
@@ -317,8 +239,7 @@ cat("\nArtikelen na filtering:\n")
 cat("  Totaal uniek: ", nrow(alle_artikelen), "\n")
 cat("  Reuters:      ", sum(alle_artikelen$source == "reuters"), "\n")
 cat("  AP News:      ", sum(alle_artikelen$source == "ap_news"), "\n")
-cat("  Google News:  ", sum(alle_artikelen$source == "google"), "\n")
-cat("  Currents:     ", sum(alle_artikelen$source == "currents"), "\n\n")
+cat("  Google News:  ", sum(alle_artikelen$source == "google"), "\n\n")
 
 if (nrow(alle_artikelen) == 0) {
   cat("Geen artikelen over na filtering\n")
@@ -330,13 +251,7 @@ if (nrow(alle_artikelen) == 0) {
 # ============================================================
 
 beoordeel_artikel <- function(titel, beschrijving, api_key) {
-
-  context <- if (nchar(trimws(beschrijving)) > 0) {
-    paste0("BESCHRIJVING: ", beschrijving, "\n\n")
-  } else {
-    ""
-  }
-
+  context <- if (nchar(trimws(beschrijving)) > 0) paste0("BESCHRIJVING: ", beschrijving, "\n\n") else ""
   prompt <- paste0(
     "Je bent een ESG analist. Beoordeel het volgende nieuwsartikel:\n\n",
     "TITEL: ", titel, "\n\n",
@@ -355,34 +270,25 @@ beoordeel_artikel <- function(titel, beschrijving, api_key) {
     "Antwoord ALLEEN in dit JSON formaat zonder extra tekst:\n",
     "{\"is_esg\": true, \"bedrijf\": \"NAAM\", \"ticker\": \"TICK\", \"pillar\": \"E\", \"severity\": 2}"
   )
-
   body <- list(
     model      = "claude-haiku-4-5-20251001",
     max_tokens = 150,
     messages   = list(list(role = "user", content = prompt))
   )
-
   tryCatch({
     resp <- POST(
       "https://api.anthropic.com/v1/messages",
-      add_headers(
-        "x-api-key"         = api_key,
-        "anthropic-version" = "2023-06-01",
-        "content-type"      = "application/json"
-      ),
+      add_headers("x-api-key" = api_key, "anthropic-version" = "2023-06-01", "content-type" = "application/json"),
       body = toJSON(body, auto_unbox = TRUE),
       timeout(15)
     )
-
-    if (status_code(resp) != 200) return(NULL)
-
+    if (status_code(resp) != 200) {
+      cat("    Status:", status_code(resp), "\n")
+      return(NULL)
+    }
     data  <- fromJSON(content(resp, "text"))
-    tekst <- data$content$text[1]
-    tekst <- gsub("```json|```", "", tekst)
-    tekst <- trimws(tekst)
-    result <- fromJSON(tekst)
-    return(result)
-
+    tekst <- gsub("```json|```", "", data$content$text[1])
+    return(fromJSON(trimws(tekst)))
   }, error = function(e) {
     cat("    Fout:", conditionMessage(e), "\n")
     return(NULL)
@@ -414,7 +320,7 @@ for (i in 1:nrow(alle_artikelen)) {
 
   ticker <- if (!is.null(result$ticker) && result$ticker != "null") result$ticker else NA
 
-  event <- data.frame(
+  nieuwe_events[[i]] <- data.frame(
     isin        = NA,
     company     = result$bedrijf,
     ticker      = ticker,
@@ -429,10 +335,7 @@ for (i in 1:nrow(alle_artikelen)) {
     stringsAsFactors = FALSE
   )
 
-  nieuwe_events[[i]] <- event
-  cat("    ESG event:", result$bedrijf, "(", ticker, ") | Pillar:",
-      result$pillar, "| Severity:", result$severity, "\n")
-
+  cat("    ESG event:", result$bedrijf, "(", ticker, ") | Pillar:", result$pillar, "| Severity:", result$severity, "\n")
   Sys.sleep(0.5)
 }
 
@@ -464,10 +367,7 @@ if (length(nieuwe_events) == 0) {
     gecombineerd <- nieuwe_df
   }
 
-  write.csv(gecombineerd,
-            file.path(pad_data, "events_detected.csv"),
-            row.names = FALSE)
-
+  write.csv(gecombineerd, file.path(pad_data, "events_detected.csv"), row.names = FALSE)
   cat("\nTotaal events in database:", nrow(gecombineerd), "\n")
   cat("events_detected.csv bijgewerkt\n")
 }
