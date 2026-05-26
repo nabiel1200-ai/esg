@@ -1,6 +1,6 @@
 # ============================================================
 # ESG_Alpha Live — 02_ai_agent.R
-# AI agent met Reuters RSS, AP News RSS + Google News RSS
+# NewsAPI als primaire bron + Google News RSS als backup
 # Nabiel Mamnoen
 # ============================================================
 
@@ -10,18 +10,18 @@ library(jsonlite)
 library(xml2)
 
 ANTHROPIC_KEY <- Sys.getenv("ANTHROPIC_KEY")
+NEWS_API_KEY  <- Sys.getenv("NEWS_API_KEY")
 pad_data      <- "data"
 
 # ============================================================
-# FALSE POSITIVE KEYWORDS
+# FALSE POSITIVE FILTER
 # ============================================================
 
 false_positive_keywords <- c(
   # Advocatenkantoor berichten
   "investors have opportunity to lead",
-  "investors have opportunity to join",
   "shareholders who lost money",
-  "claimsfiler reminds",
+  "claimsfiler",
   "bronstein gewirtz",
   "hagens berman",
   "schall law firm",
@@ -33,48 +33,46 @@ false_positive_keywords <- c(
   "faruqi & faruqi",
   "levi & korsinsky",
   "wolf haldenstein",
-  "law offices of",
   "deadline alert",
-  "investor alert",
   "investor notice",
   "shareholder alert",
+  "law offices of",
   "investors urged to contact",
   "investors may seek to lead",
   "investors with losses",
   "lead plaintiff deadline",
   "securities class action",
   "class action lawsuit",
-  "securities fraud lawsuit",
-  "fraud investigation",
   "remind investors",
   "encourage investors",
   "urges investors",
-  "urges former",
   "if you purchased shares",
   "recover losses",
   "pursuing claims",
+  "securities fraud lawsuit",
   "securities litigation",
   "investor rights",
-  "important notice to",
-  "notice to long-term shareholders",
-  "shareholders who purchased",
-  "investors who purchased",
+  "filed a class action",
+  "investigation on behalf",
+  "announces investigation",
+  "notifies investors",
   # Earnings / financieel
   "quarterly earnings",
   "q1 results", "q2 results", "q3 results", "q4 results",
-  "earnings per share",
+  "earnings per share", "eps beat", "eps miss",
   "revenue guidance",
   "raised its outlook",
   "dividend declared",
   "stock buyback",
   "share repurchase",
+  "analyst rating",
+  "price target",
+  "upgrade", "downgrade",
   # Overige ruis
-  "h-1b visa", "h1b visa",
-  "premier league", "nfl", "nba",
   "bitcoin", "crypto", "blockchain",
-  "analyst", "upgrade", "downgrade", "price target",
+  "merger", "acquisition", "ipo",
   "how to claim", "how to file a claim",
-  "who qualifies", "here's how to"
+  "premier league", "nfl", "nba"
 )
 
 is_false_positive <- function(title) {
@@ -83,76 +81,76 @@ is_false_positive <- function(title) {
 }
 
 # ============================================================
-# BRON 1: REUTERS RSS (gratis, geen key)
+# BRON 1: NEWSAPI (primaire bron)
 # ============================================================
 
-reuters_feeds <- c(
-  "https://feeds.reuters.com/reuters/businessNews",
-  "https://feeds.reuters.com/reuters/companyNews",
-  "https://feeds.reuters.com/reuters/environment"
+newsapi_queries <- c(
+  "company environmental fine penalty EPA",
+  "oil spill chemical leak contamination",
+  "factory pollution air water violation",
+  "workplace harassment discrimination settlement",
+  "corporate data breach privacy violation",
+  "child labor supply chain violation",
+  "factory safety workers killed injured",
+  "executive bribery corruption arrested",
+  "CEO fraud accounting scandal",
+  "insider trading executive charged",
+  "company misconduct fine court ruling",
+  "corporate human rights violation",
+  "toxic waste dumping company fined",
+  "environmental crime company prosecuted",
+  "labor abuse workers exploitation company"
 )
 
-fetch_reuters <- function(feed_url) {
+fetch_newsapi <- function(query, api_key) {
   tryCatch({
-    resp <- GET(feed_url, timeout(15))
-    if (status_code(resp) != 200) return(NULL)
-    xml   <- read_xml(content(resp, "text", encoding = "UTF-8"))
-    items <- xml_find_all(xml, "//item")
-    if (length(items) == 0) return(NULL)
-    titels <- xml_text(xml_find_first(items, "title"))
-    datums <- xml_text(xml_find_first(items, "pubDate"))
-    links  <- xml_text(xml_find_first(items, "link"))
-    descr  <- xml_text(xml_find_first(items, "description"))
-    data.frame(
-      title       = titels,
-      description = substr(ifelse(is.na(descr), "", descr), 1, 300),
-      pub_date    = as.Date(sub(" GMT| UTC", "", datums), format = "%a, %d %b %Y %H:%M:%S"),
-      link        = links,
-      source      = "reuters",
-      stringsAsFactors = FALSE
-    ) %>% filter(!is.na(pub_date), !is.na(title), title != "")
+    query_enc <- utils::URLencode(query)
+    url <- paste0(
+      "https://newsapi.org/v2/everything?",
+      "q=", query_enc,
+      "&language=en",
+      "&sortBy=publishedAt",
+      "&pageSize=20",
+      "&from=", format(Sys.Date() - 3),
+      "&apiKey=", api_key
+    )
+
+    resp <- GET(url, timeout(15))
+
+    if (status_code(resp) != 200) {
+      cat("  NewsAPI fout status:", status_code(resp), "\n")
+      return(NULL)
+    }
+
+    data <- fromJSON(httr::content(resp, "text", encoding = "UTF-8"))
+
+    if (is.null(data$articles) || nrow(data$articles) == 0) return(NULL)
+
+    articles <- data$articles %>%
+      mutate(
+        pub_date    = as.Date(substr(publishedAt, 1, 10)),
+        description = ifelse(is.na(description), "", substr(description, 1, 300)),
+        source_name = ifelse(is.null(source$name), "newsapi", source$name)
+      ) %>%
+      filter(!is.na(pub_date), !is.na(title), title != "[Removed]") %>%
+      select(
+        title,
+        description,
+        pub_date,
+        link   = url,
+        source = source_name
+      )
+
+    return(articles)
+
   }, error = function(e) {
-    cat("  Reuters fout:", conditionMessage(e), "\n")
-    NULL
+    cat("  NewsAPI fout:", conditionMessage(e), "\n")
+    return(NULL)
   })
 }
 
 # ============================================================
-# BRON 2: AP NEWS RSS (gratis, geen key)
-# ============================================================
-
-ap_feeds <- c(
-  "https://rsshub.app/apnews/topics/business",
-  "https://rsshub.app/apnews/topics/climate-environment"
-)
-
-fetch_ap <- function(feed_url) {
-  tryCatch({
-    resp <- GET(feed_url, timeout(15))
-    if (status_code(resp) != 200) return(NULL)
-    xml   <- read_xml(content(resp, "text", encoding = "UTF-8"))
-    items <- xml_find_all(xml, "//item")
-    if (length(items) == 0) return(NULL)
-    titels <- xml_text(xml_find_first(items, "title"))
-    datums <- xml_text(xml_find_first(items, "pubDate"))
-    links  <- xml_text(xml_find_first(items, "link"))
-    descr  <- xml_text(xml_find_first(items, "description"))
-    data.frame(
-      title       = titels,
-      description = substr(ifelse(is.na(descr), "", descr), 1, 300),
-      pub_date    = as.Date(sub(" GMT| UTC", "", datums), format = "%a, %d %b %Y %H:%M:%S"),
-      link        = links,
-      source      = "ap_news",
-      stringsAsFactors = FALSE
-    ) %>% filter(!is.na(pub_date), !is.na(title), title != "")
-  }, error = function(e) {
-    cat("  AP News fout:", conditionMessage(e), "\n")
-    NULL
-  })
-}
-
-# ============================================================
-# BRON 3: GOOGLE NEWS RSS (gerichte queries)
+# BRON 2: GOOGLE NEWS RSS (backup)
 # ============================================================
 
 google_queries <- c(
@@ -161,31 +159,45 @@ google_queries <- c(
   "workplace harassment discrimination settlement company",
   "corporate data breach privacy scandal",
   "executive bribery corruption arrested company",
-  "factory safety workers killed injured company",
-  "company pollution toxic waste fine"
+  "company scandal misconduct fine court ruling",
+  "corporate human rights violation labor abuse"
 )
 
 fetch_google_news <- function(query) {
   query_enc <- utils::URLencode(query)
-  url <- paste0("https://news.google.com/rss/search?q=", query_enc, "&hl=en-US&gl=US&ceid=US:en")
+  url <- paste0(
+    "https://news.google.com/rss/search?q=",
+    query_enc,
+    "&hl=en-US&gl=US&ceid=US:en"
+  )
   tryCatch({
     resp <- GET(url, timeout(10))
     if (status_code(resp) != 200) return(NULL)
-    xml   <- read_xml(content(resp, "text", encoding = "UTF-8"))
+
+    xml   <- read_xml(httr::content(resp, "text", encoding = "UTF-8"))
     items <- xml_find_all(xml, "//item")
     if (length(items) == 0) return(NULL)
+
     titels <- xml_text(xml_find_first(items, "title"))
     datums <- xml_text(xml_find_first(items, "pubDate"))
     links  <- xml_text(xml_find_first(items, "link"))
-    data.frame(
+
+    df <- data.frame(
       title       = titels,
       description = "",
-      pub_date    = as.Date(sub(" GMT| UTC", "", datums), format = "%a, %d %b %Y %H:%M:%S"),
+      pub_date    = as.Date(sub(" GMT| UTC", "", datums),
+                            format = "%a, %d %b %Y %H:%M:%S"),
       link        = links,
-      source      = "google",
+      source      = "google_news",
       stringsAsFactors = FALSE
     ) %>% filter(!is.na(pub_date), !is.na(title), title != "")
-  }, error = function(e) NULL)
+
+    return(df)
+
+  }, error = function(e) {
+    cat("  Google News fout:", conditionMessage(e), "\n")
+    return(NULL)
+  })
 }
 
 # ============================================================
@@ -197,28 +209,31 @@ cat("Tijdstip:", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "\n\n")
 
 all_articles <- list()
 
-cat("Reuters RSS ophalen...\n")
-for (feed in reuters_feeds) {
-  result <- fetch_reuters(feed)
-  if (!is.null(result)) all_articles[[paste0("reuters_", feed)]] <- result
-  Sys.sleep(0.5)
+# NewsAPI
+cat("NewsAPI ophalen...\n")
+for (q in newsapi_queries) {
+  result <- fetch_newsapi(q, NEWS_API_KEY)
+  if (!is.null(result) && nrow(result) > 0) {
+    all_articles[[paste0("newsapi_", q)]] <- result
+    cat("  Query '", substr(q, 1, 40), "': ", nrow(result), " artikelen\n", sep="")
+  }
+  Sys.sleep(0.3)
 }
 
-cat("AP News RSS ophalen...\n")
-for (feed in ap_feeds) {
-  result <- fetch_ap(feed)
-  if (!is.null(result)) all_articles[[paste0("ap_", feed)]] <- result
-  Sys.sleep(0.5)
-}
+newsapi_count <- sum(sapply(all_articles, nrow))
+cat("NewsAPI totaal:", newsapi_count, "artikelen\n\n")
 
+# Google News RSS als backup
 cat("Google News RSS ophalen...\n")
 for (q in google_queries) {
   result <- fetch_google_news(q)
   if (!is.null(result)) {
-    result <- result %>% filter(pub_date >= Sys.Date() - 7)
-    if (nrow(result) > 0) all_articles[[paste0("google_", q)]] <- result
+    result <- result %>% filter(pub_date >= Sys.Date() - 3)
+    if (nrow(result) > 0) {
+      all_articles[[paste0("google_", q)]] <- result
+    }
   }
-  Sys.sleep(1)
+  Sys.sleep(0.3)
 }
 
 if (length(all_articles) == 0) {
@@ -232,14 +247,13 @@ if (length(all_articles) == 0) {
 
 alle_artikelen <- bind_rows(all_articles) %>%
   distinct(title, .keep_all = TRUE) %>%
-  filter(pub_date >= Sys.Date() - 7) %>%
+  filter(pub_date >= Sys.Date() - 3) %>%
   filter(!sapply(title, is_false_positive))
 
 cat("\nArtikelen na filtering:\n")
-cat("  Totaal uniek: ", nrow(alle_artikelen), "\n")
-cat("  Reuters:      ", sum(alle_artikelen$source == "reuters"), "\n")
-cat("  AP News:      ", sum(alle_artikelen$source == "ap_news"), "\n")
-cat("  Google News:  ", sum(alle_artikelen$source == "google"), "\n\n")
+cat("  Totaal uniek:  ", nrow(alle_artikelen), "\n")
+cat("  NewsAPI:       ", sum(grepl("^Reuters|^AP|^BBC|^CNN|newsapi", alle_artikelen$source, ignore.case=TRUE)), "\n")
+cat("  Google News:   ", sum(alle_artikelen$source == "google_news"), "\n\n")
 
 if (nrow(alle_artikelen) == 0) {
   cat("Geen artikelen over na filtering\n")
@@ -251,7 +265,13 @@ if (nrow(alle_artikelen) == 0) {
 # ============================================================
 
 beoordeel_artikel <- function(titel, beschrijving, api_key) {
-  context <- if (nchar(trimws(beschrijving)) > 0) paste0("BESCHRIJVING: ", beschrijving, "\n\n") else ""
+
+  context <- if (nchar(trimws(beschrijving)) > 0) {
+    paste0("BESCHRIJVING: ", beschrijving, "\n\n")
+  } else {
+    ""
+  }
+
   prompt <- paste0(
     "Je bent een ESG analist. Beoordeel het volgende nieuwsartikel:\n\n",
     "TITEL: ", titel, "\n\n",
@@ -261,36 +281,49 @@ beoordeel_artikel <- function(titel, beschrijving, api_key) {
     "   - Alleen bedrijven die op een beurs verhandeld worden (NYSE, NASDAQ, AEX etc.)\n",
     "   - Overheidsinstanties, NGOs en privébedrijven tellen NIET\n",
     "2. Welk beursgenoteerd bedrijf?\n",
-    "3. Wat is de beursticker? (bijv. AAPL, SHEL, ASML)\n",
-    "4. Pillar: E (Environmental), S (Social), G (Governance), Cross (meerdere)\n",
+    "3. Wat is de beursticker? Geef de echte ticker (bijv. AAPL voor Apple, XOM voor ExxonMobil)\n",
+    "4. Pillar: E (Environmental), S (Social), G (Governance), Cross (meerdere pillars)\n",
     "5. Severity: 1 (laag), 2 (midden), 3 (hoog)\n",
     "   - Severity 3: crimineel, miljarden, doden, federaal onderzoek\n",
     "   - Severity 2: boete, rechtszaak, settlement, onderzoek\n",
     "   - Severity 1: klacht, beschuldiging, kleine overtreding\n\n",
-    "Antwoord ALLEEN in dit JSON formaat zonder extra tekst:\n",
-"{\"is_esg\": true, \"bedrijf\": \"Apple Inc\", \"ticker\": \"AAPL\", \"pillar\": \"E\", \"severity\": 2}\n",
-"Als je de ticker niet weet, gebruik dan null:\n",
-"{\"is_esg\": true, \"bedrijf\": \"Onbekend Bedrijf\", \"ticker\": null, \"pillar\": \"S\", \"severity\": 1}"
+    "Voorbeelden van correcte output:\n",
+    "{\"is_esg\": true, \"bedrijf\": \"Apple Inc\", \"ticker\": \"AAPL\", \"pillar\": \"S\", \"severity\": 2}\n",
+    "{\"is_esg\": true, \"bedrijf\": \"ExxonMobil\", \"ticker\": \"XOM\", \"pillar\": \"E\", \"severity\": 3}\n",
+    "{\"is_esg\": false, \"bedrijf\": null, \"ticker\": null, \"pillar\": null, \"severity\": null}\n\n",
+    "Antwoord ALLEEN in JSON formaat zonder extra tekst of uitleg."
   )
+
   body <- list(
     model      = "claude-haiku-4-5-20251001",
     max_tokens = 150,
     messages   = list(list(role = "user", content = prompt))
   )
+
   tryCatch({
     resp <- POST(
       "https://api.anthropic.com/v1/messages",
-      add_headers("x-api-key" = api_key, "anthropic-version" = "2023-06-01", "content-type" = "application/json"),
+      add_headers(
+        "x-api-key"         = api_key,
+        "anthropic-version" = "2023-06-01",
+        "content-type"      = "application/json"
+      ),
       body = toJSON(body, auto_unbox = TRUE),
       timeout(15)
     )
+
     if (status_code(resp) != 200) {
-      cat("    Status:", status_code(resp), "\n")
+      cat("    Anthropic API fout:", status_code(resp), "\n")
       return(NULL)
     }
-    data  <- fromJSON(content(resp, "text"))
-    tekst <- gsub("```json|```", "", data$content$text[1])
-    return(fromJSON(trimws(tekst)))
+
+    data  <- fromJSON(httr::content(resp, "text", encoding = "UTF-8"))
+    tekst <- data$content$text[1]
+    tekst <- gsub("```json|```", "", tekst)
+    tekst <- trimws(tekst)
+    result <- fromJSON(tekst)
+    return(result)
+
   }, error = function(e) {
     cat("    Fout:", conditionMessage(e), "\n")
     return(NULL)
@@ -316,19 +349,25 @@ for (i in 1:nrow(alle_artikelen)) {
 
   result <- beoordeel_artikel(titel, beschrijving, ANTHROPIC_KEY)
 
-  if (is.null(result))                                      { Sys.sleep(0.5); next }
-  if (!isTRUE(result$is_esg))                              { cat("    Geen ESG event\n"); Sys.sleep(0.5); next }
-  if (is.null(result$bedrijf) || result$bedrijf == "null") { Sys.sleep(0.5); next }
+  if (is.null(result))         { Sys.sleep(0.5); next }
+  if (!isTRUE(result$is_esg)) { cat("    Geen ESG event\n"); Sys.sleep(0.5); next }
+  if (is.null(result$bedrijf) || identical(result$bedrijf, "null") ||
+      is.na(result$bedrijf))   { Sys.sleep(0.5); next }
 
+  # Ticker validatie
   ticker_raw <- result$ticker
-  ticker <- if (!is.null(ticker_raw) && 
-                !is.na(ticker_raw) && 
-                ticker_raw != "null" && 
-                ticker_raw != "TICK" &&
-                ticker_raw != "" &&
-                nchar(ticker_raw) <= 6) ticker_raw else NA
+  ticker <- if (!is.null(ticker_raw) &&
+                !is.na(ticker_raw) &&
+                !identical(ticker_raw, "null") &&
+                nchar(trimws(ticker_raw)) >= 1 &&
+                nchar(trimws(ticker_raw)) <= 6 &&
+                grepl("^[A-Z]+$", trimws(ticker_raw))) {
+    trimws(ticker_raw)
+  } else {
+    NA
+  }
 
-  nieuwe_events[[i]] <- data.frame(
+  event <- data.frame(
     isin        = NA,
     company     = result$bedrijf,
     ticker      = ticker,
@@ -338,12 +377,17 @@ for (i in 1:nrow(alle_artikelen)) {
     link        = link,
     source      = source,
     pillar      = result$pillar,
-    severity    = as.integer(pmin(result$severity, 3)),
+    severity    = as.integer(pmin(as.integer(result$severity), 3)),
     scraped_at  = as.numeric(Sys.Date()),
     stringsAsFactors = FALSE
   )
 
-  cat("    ESG event:", result$bedrijf, "(", ticker, ") | Pillar:", result$pillar, "| Severity:", result$severity, "\n")
+  nieuwe_events[[length(nieuwe_events) + 1]] <- event
+  cat("    ✓ ESG event:", result$bedrijf,
+      "| Ticker:", ifelse(is.na(ticker), "onbekend", ticker),
+      "| Pillar:", result$pillar,
+      "| Severity:", result$severity, "\n")
+
   Sys.sleep(0.5)
 }
 
@@ -357,7 +401,8 @@ if (length(nieuwe_events) == 0) {
   nieuwe_df <- bind_rows(nieuwe_events) %>% filter(!is.na(pillar))
 
   cat("\n=== NIEUWE EVENTS ===\n")
-  cat("Gevonden:", nrow(nieuwe_df), "\n\n")
+  cat("Gevonden:", nrow(nieuwe_df), "\n")
+  cat("Met ticker:", sum(!is.na(nieuwe_df$ticker)), "\n\n")
   print(nieuwe_df %>% select(company, ticker, pub_date, pillar, severity, title))
 
   bestaand_pad <- file.path(pad_data, "events_detected.csv")
@@ -375,7 +420,10 @@ if (length(nieuwe_events) == 0) {
     gecombineerd <- nieuwe_df
   }
 
-  write.csv(gecombineerd, file.path(pad_data, "events_detected.csv"), row.names = FALSE)
+  write.csv(gecombineerd,
+            file.path(pad_data, "events_detected.csv"),
+            row.names = FALSE)
+
   cat("\nTotaal events in database:", nrow(gecombineerd), "\n")
   cat("events_detected.csv bijgewerkt\n")
 }
