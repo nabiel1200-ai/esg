@@ -44,6 +44,9 @@ if (!file.exists(events_pad)) {
 events <- read.csv(events_pad, stringsAsFactors = FALSE) %>%
   mutate(pub_date = as.Date(pub_date))
 
+# Voeg ticker kolom toe als die ontbreekt (oude data)
+if (!"ticker" %in% names(events)) events$ticker <- NA
+
 cat("Events ingeladen:", nrow(events), "\n")
 
 # Alleen events met geldige ticker uit de laatste 30 dagen
