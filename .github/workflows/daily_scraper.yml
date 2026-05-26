@@ -42,7 +42,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/events_detected.csv
+          git add data/events_detected.csv || true
           git add data/signals_live.csv || true
-          git diff --quiet && git diff --staged --quiet || git commit -m "Daily ESG update $(date)"
-          git push
+          git diff --staged --quiet || git commit -m "Daily ESG update $(date)"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
