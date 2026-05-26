@@ -268,7 +268,9 @@ beoordeel_artikel <- function(titel, beschrijving, api_key) {
     "   - Severity 2: boete, rechtszaak, settlement, onderzoek\n",
     "   - Severity 1: klacht, beschuldiging, kleine overtreding\n\n",
     "Antwoord ALLEEN in dit JSON formaat zonder extra tekst:\n",
-    "{\"is_esg\": true, \"bedrijf\": \"NAAM\", \"ticker\": \"TICK\", \"pillar\": \"E\", \"severity\": 2}"
+"{\"is_esg\": true, \"bedrijf\": \"Apple Inc\", \"ticker\": \"AAPL\", \"pillar\": \"E\", \"severity\": 2}\n",
+"Als je de ticker niet weet, gebruik dan null:\n",
+"{\"is_esg\": true, \"bedrijf\": \"Onbekend Bedrijf\", \"ticker\": null, \"pillar\": \"S\", \"severity\": 1}"
   )
   body <- list(
     model      = "claude-haiku-4-5-20251001",
