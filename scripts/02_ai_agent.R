@@ -318,7 +318,13 @@ for (i in 1:nrow(alle_artikelen)) {
   if (!isTRUE(result$is_esg))                              { cat("    Geen ESG event\n"); Sys.sleep(0.5); next }
   if (is.null(result$bedrijf) || result$bedrijf == "null") { Sys.sleep(0.5); next }
 
-  ticker <- if (!is.null(result$ticker) && result$ticker != "null") result$ticker else NA
+  ticker_raw <- result$ticker
+  ticker <- if (!is.null(ticker_raw) && 
+                !is.na(ticker_raw) && 
+                ticker_raw != "null" && 
+                ticker_raw != "TICK" &&
+                ticker_raw != "" &&
+                nchar(ticker_raw) <= 6) ticker_raw else NA
 
   nieuwe_events[[i]] <- data.frame(
     isin        = NA,
