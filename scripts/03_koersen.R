@@ -29,6 +29,19 @@ cat("Events met ticker (laatste 30 dagen):", nrow(events_met_ticker), "\n\n")
 
 if (nrow(events_met_ticker) == 0) {
   cat("Geen events met ticker gevonden — wacht op nieuwe events van AI agent\n")
+  
+  # Schrijf lege signals_live.csv zodat git add niet crasht
+  empty_df <- data.frame(
+    company=character(), ticker=character(), pub_date=as.Date(character()),
+    entry_date=as.Date(character()), exit_date=as.Date(character()),
+    pillar=character(), severity=integer(), entry_price=numeric(),
+    exit_price=numeric(), stock_return=numeric(), short_return=numeric(),
+    status=character(), title=character(), stringsAsFactors=FALSE
+  )
+  write.csv(empty_df, file.path(pad_data, "signals_live.csv"), row.names=FALSE)
+  cat("Lege signals_live.csv aangemaakt\n")
+  quit(status = 0)
+}
   quit(status = 0)
 }
 
