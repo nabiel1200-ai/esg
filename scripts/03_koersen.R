@@ -9,39 +9,53 @@ library(quantmod)
 
 pad_data <- "data"
 
+# Lege signals_live.csv template (altijd beschikbaar voor git)
+lege_signals <- function() {
+  data.frame(
+    company      = character(),
+    ticker       = character(),
+    pub_date     = as.Date(character()),
+    entry_date   = as.Date(character()),
+    exit_date    = as.Date(character()),
+    pillar       = character(),
+    severity     = integer(),
+    entry_price  = numeric(),
+    exit_price   = numeric(),
+    stock_return = numeric(),
+    short_return = numeric(),
+    status       = character(),
+    title        = character(),
+    stringsAsFactors = FALSE
+  )
+}
+
 # ============================================================
 # STAP 1: EVENTS INLADEN
 # ============================================================
 
-events <- read.csv(file.path(pad_data, "events_detected.csv"),
-                   stringsAsFactors = FALSE) %>%
+events_pad <- file.path(pad_data, "events_detected.csv")
+
+if (!file.exists(events_pad)) {
+  cat("events_detected.csv bestaat nog niet — eerste run?\n")
+  write.csv(lege_signals(), file.path(pad_data, "signals_live.csv"), row.names = FALSE)
+  quit(status = 0)
+}
+
+events <- read.csv(events_pad, stringsAsFactors = FALSE) %>%
   mutate(pub_date = as.Date(pub_date))
 
 cat("Events ingeladen:", nrow(events), "\n")
 
-# Alleen events met ticker uit de laatste 30 dagen
+# Alleen events met geldige ticker uit de laatste 30 dagen
 events_met_ticker <- events %>%
-  mutate(ticker = if ("ticker" %in% names(.)) ticker else NA) %>%
-  filter(!is.na(ticker), ticker != "NA", ticker != "") %>%
+  filter(!is.na(ticker), ticker != "NA", ticker != "", nchar(ticker) <= 6) %>%
   filter(pub_date >= Sys.Date() - 30)
 
 cat("Events met ticker (laatste 30 dagen):", nrow(events_met_ticker), "\n\n")
 
 if (nrow(events_met_ticker) == 0) {
-  cat("Geen events met ticker gevonden — wacht op nieuwe events van AI agent\n")
-  
-  # Schrijf lege signals_live.csv zodat git add niet crasht
-  empty_df <- data.frame(
-    company=character(), ticker=character(), pub_date=as.Date(character()),
-    entry_date=as.Date(character()), exit_date=as.Date(character()),
-    pillar=character(), severity=integer(), entry_price=numeric(),
-    exit_price=numeric(), stock_return=numeric(), short_return=numeric(),
-    status=character(), title=character(), stringsAsFactors=FALSE
-  )
-  write.csv(empty_df, file.path(pad_data, "signals_live.csv"), row.names=FALSE)
-  cat("Lege signals_live.csv aangemaakt\n")
-  quit(status = 0)
-}
+  cat("Geen events met ticker gevonden — signals_live.csv leeg opgeslagen\n")
+  write.csv(lege_signals(), file.path(pad_data, "signals_live.csv"), row.names = FALSE)
   quit(status = 0)
 }
 
@@ -55,7 +69,7 @@ get_return <- function(ticker, entry_date, exit_date) {
     to   <- format(min(exit_date + 2, Sys.Date()))
 
     getSymbols(ticker, from = from, to = to,
-               src = "yahoo", auto.assign = TRUE)
+               src = "yahoo", auto.assign = TRUE, warnings = FALSE)
 
     price_data <- get(ticker)
     closes     <- as.numeric(Cl(price_data))
@@ -99,7 +113,7 @@ get_return <- function(ticker, entry_date, exit_date) {
     }
 
   }, error = function(e) {
-    list(entry_price = NA, exit_price   = NA,
+    list(entry_price = NA, exit_price = NA,
          stock_return = NA, short_return = NA,
          status = paste0("Fout: ", conditionMessage(e)))
   })
@@ -160,11 +174,6 @@ if (nrow(perf) > 0) {
   cat("Gem. SHORT return:", round(mean(perf$short_return), 4), "%\n")
   cat("Hit ratio:        ", round(mean(perf$short_return > 0) * 100, 1), "%\n\n")
 }
-
-cat("=== PER SIGNAL ===\n")
-print(signals_df %>%
-  select(company, ticker, entry_date, pillar,
-         entry_price, exit_price, short_return, status))
 
 # ============================================================
 # STAP 5: OPSLAAN
