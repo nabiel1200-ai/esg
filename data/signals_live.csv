@@ -1,2 +1,17 @@
 "company","ticker","pub_date","entry_date","exit_date","pillar","severity","entry_price","exit_price","stock_return","short_return","status","title"
 "Microsoft Corporation","MSFT",2026-05-26,2026-05-27,2026-06-01,"G",2,NA,NA,NA,NA,"Geen data","Microsoft agrees to pay $250m to settle lawsuit over Activision Blizzard deal"
+"Independant Media (Pty) Ltd / News24","INL",2026-05-26,2026-05-27,2026-06-01,"G",3,NA,NA,NA,NA,"Fout: Unable to import “INL”.
+attempt to set an attribute on NULL","News24 | The ‘housewife’, the driver, the pensioner and the dodgy lottery grant"
+"ITV plc","ITV",2026-05-26,2026-05-27,2026-06-01,"S",3,NA,NA,NA,NA,"Fout: Unable to import “ITV”.
+attempt to set an attribute on NULL","'I felt used, dirty, like a prostitute': After two women claim they were raped on Channel 4's Married At First Sight, another 'bride' tells of her own deeply traumatising experience"
+"Meta Platforms, Inc.","META",2026-05-26,2026-05-27,2026-06-01,"S",3,NA,NA,NA,NA,"Geen data","Facebook panics as more social media addiction lawsuits pop up across the country… the company was dealt a major blow in Kentucky"
+"Sportradar","SRAD",2026-05-25,2026-05-26,2026-05-31,"G",3,12.99,12.99,0,-0.1,"Open","$SRAD Shareholder Announcement: Sportradar may have Misled Investors about its Revenue Sources – Contact BFA Law about the Pending Securities Fraud Class Action"
+"Commvault Systems Inc","CVLT",2026-05-25,2026-05-26,2026-05-31,"G",3,108.09,108.09,0,-0.1,"Open","$CVLT Shareholder Announcement: Commvault may have Misled Investors about its ARR Growth Issues – Contact BFA Law about the Pending Securities Fraud Class Action"
+"NevGold Corp","NVGL",2026-05-25,2026-05-26,2026-05-31,"E",2,NA,NA,NA,NA,"Fout: Unable to import “NVGL”.
+cannot open the connection","The Crushed Pile in Nevada: How a Forgotten 1989 Gold Heap Is Becoming One of America’s Few Near-Term Antimony Solutions"
+"NevGold Corp","NVGD",2026-05-25,2026-05-26,2026-05-31,"E",2,NA,NA,NA,NA,"Fout: Unable to import “NVGD”.
+cannot open the connection","America’s Brownfield Antimony Play: Every Drillhole Hits as Nevada Project Targets 2027 Production"
+"All3Media (part of Discovery Inc.)","WBD",2026-05-25,2026-05-26,2026-05-31,"S",3,27,27,0,-0.1,"Open","Allegations of rape on ‘Married at First Sight UK’ rattle the reality-TV industry"
+"Channel 4 Television Corporation (ITV plc moedermaatschappij)","ITV",2026-05-25,2026-05-26,2026-05-31,"S",3,NA,NA,NA,NA,"Fout: Unable to import “ITV”.
+attempt to set an attribute on NULL","Love Island star Sharon Gaffka calls for MAFS UK bosses to introduce 'specialist safeguarding professionals separate from production' after stars alleged welfare measures fell short following sexual assault claims"
+"Warner Bros. Discovery","WBD",2026-05-24,2026-05-25,2026-05-30,"S",3,27,27,0,-0.1,"Open","EXCLUSIVE: Massive Reality TV Show 'Set for Axe' After Female Contestants' Rape and Sex Abuse Allegations Air — As Its US Season Launches"
