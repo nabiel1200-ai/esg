@@ -31,6 +31,7 @@ jobs:
         env:
           ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_KEY }}
           NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
+          GUARDIAN_KEY: ${{ secrets.GUARDIAN_KEY }}
         run: |
           Rscript scripts/02_ai_agent.R
 
