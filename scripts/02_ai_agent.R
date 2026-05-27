@@ -465,33 +465,46 @@ for (i in 1:nrow(alle_artikelen)) {
 
   result <- beoordeel_artikel(titel, beschrijving, ANTHROPIC_KEY)
 
-  if (is.null(result))         { Sys.sleep(0.5); next }
+  if (is.null(result)) { Sys.sleep(0.5); next }
   if (!isTRUE(result$is_esg)) { cat("    Geen ESG event\n"); Sys.sleep(0.5); next }
-  if (is.null(result$bedrijf) || identical(result$bedrijf, "null") ||
-      is.na(result$bedrijf))   { Sys.sleep(0.5); next }
 
-  ticker_raw <- result$ticker
-  ticker <- if (!is.null(ticker_raw) &&
-                !is.na(ticker_raw) &&
-                !identical(ticker_raw, "null") &&
+  # Veilig waarden extraheren
+  safe_val <- function(x, default = NA_character_) {
+    if (is.null(x) || length(x) == 0) return(default)
+    v <- as.character(x[1])
+    if (is.na(v) || v == "null" || v == "NULL") return(default)
+    v
+  }
+
+  bedrijf  <- safe_val(result$bedrijf)
+  pillar   <- safe_val(result$pillar)
+  sev_raw  <- safe_val(result$severity, default = "1")
+
+  if (is.na(bedrijf) || is.na(pillar)) { Sys.sleep(0.5); next }
+
+  ticker_raw <- safe_val(result$ticker)
+  ticker <- if (!is.na(ticker_raw) &&
                 nchar(trimws(ticker_raw)) >= 1 &&
                 nchar(trimws(ticker_raw)) <= 6 &&
                 grepl("^[A-Z.]+$", trimws(ticker_raw))) {
     trimws(ticker_raw)
-  } else NA
+  } else NA_character_
 
-  # Forceer alle velden naar lengte 1 om data.frame crash te voorkomen
+  severity_int <- suppressWarnings(as.integer(sev_raw))
+  if (is.na(severity_int) || severity_int < 1) severity_int <- 1L
+  if (severity_int > 3) severity_int <- 3L
+
   event <- data.frame(
     isin        = NA_character_,
-    company     = as.character(result$bedrijf)[1],
-    ticker      = ifelse(is.na(ticker), NA_character_, as.character(ticker)[1]),
-    title       = as.character(titel)[1],
-    description = as.character(beschrijving)[1],
-    pub_date    = pub_date[1],
-    link        = as.character(link)[1],
-    source      = as.character(source)[1],
-    pillar      = as.character(result$pillar)[1],
-    severity    = as.integer(pmin(as.integer(result$severity[1]), 3)),
+    company     = bedrijf,
+    ticker      = ticker,
+    title       = as.character(titel),
+    description = as.character(beschrijving),
+    pub_date    = pub_date,
+    link        = as.character(link),
+    source      = as.character(source),
+    pillar      = pillar,
+    severity    = severity_int,
     scraped_at  = as.numeric(Sys.Date()),
     stringsAsFactors = FALSE
   )
