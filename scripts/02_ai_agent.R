@@ -480,17 +480,18 @@ for (i in 1:nrow(alle_artikelen)) {
     trimws(ticker_raw)
   } else NA
 
+  # Forceer alle velden naar lengte 1 om data.frame crash te voorkomen
   event <- data.frame(
-    isin        = NA,
-    company     = result$bedrijf,
-    ticker      = ticker,
-    title       = titel,
-    description = beschrijving,
-    pub_date    = pub_date,
-    link        = link,
-    source      = source,
-    pillar      = result$pillar,
-    severity    = as.integer(pmin(as.integer(result$severity), 3)),
+    isin        = NA_character_,
+    company     = as.character(result$bedrijf)[1],
+    ticker      = ifelse(is.na(ticker), NA_character_, as.character(ticker)[1]),
+    title       = as.character(titel)[1],
+    description = as.character(beschrijving)[1],
+    pub_date    = pub_date[1],
+    link        = as.character(link)[1],
+    source      = as.character(source)[1],
+    pillar      = as.character(result$pillar)[1],
+    severity    = as.integer(pmin(as.integer(result$severity[1]), 3)),
     scraped_at  = as.numeric(Sys.Date()),
     stringsAsFactors = FALSE
   )
