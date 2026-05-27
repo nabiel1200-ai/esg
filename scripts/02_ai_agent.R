@@ -1,6 +1,6 @@
 # ============================================================
 # ESG_Alpha Live — 02_ai_agent.R
-# NewsAPI (100 requests/dag) + Google News RSS backup
+# NewsAPI + Guardian API + Google News RSS backup
 # Nabiel Mamnoen
 # ============================================================
 
@@ -11,6 +11,7 @@ library(xml2)
 
 ANTHROPIC_KEY <- Sys.getenv("ANTHROPIC_KEY")
 NEWS_API_KEY  <- Sys.getenv("NEWS_API_KEY")
+GUARDIAN_KEY  <- Sys.getenv("GUARDIAN_KEY")
 pad_data      <- "data"
 
 # ============================================================
@@ -73,11 +74,10 @@ is_false_positive <- function(title) {
 }
 
 # ============================================================
-# BRON 1: NEWSAPI — 100 queries voor maximale coverage
+# BRON 1: NEWSAPI
 # ============================================================
 
 newsapi_queries <- c(
-  # Environmental
   "company environmental fine penalty EPA",
   "oil spill chemical leak contamination company",
   "factory pollution air water violation fine",
@@ -98,8 +98,7 @@ newsapi_queries <- c(
   "soil contamination company toxic fine",
   "environmental permit violation company",
   "clean air act violation company fined",
-  # Social
-  "workplace harassment discrimination settlement company",
+  "workplace harassment discrimination settlement",
   "factory safety workers killed injured company",
   "child labor supply chain violation company",
   "corporate human rights violation labor abuse",
@@ -119,7 +118,6 @@ newsapi_queries <- c(
   "union busting company workers rights",
   "sweatshop company supply chain exposed",
   "immigrant workers exploitation company raid",
-  # Governance
   "executive bribery corruption arrested company",
   "CEO fraud accounting scandal company",
   "insider trading executive charged company",
@@ -129,39 +127,19 @@ newsapi_queries <- c(
   "board misconduct company shareholders lawsuit",
   "corporate tax fraud company investigation",
   "CEO fired misconduct company scandal",
-  "executive misconduct company board removed",
   "antitrust violation company fined DOJ",
   "price fixing company cartel fine",
   "bribery company foreign officials FCPA",
   "market manipulation company SEC charged",
   "false statements company SEC fine",
-  "corporate governance failure company scandal",
-  "conflict of interest company executive",
-  "related party transaction company fraud",
-  "audit failure company accounting scandal",
   "misleading investors company SEC enforcement",
-  # Cross-pillar / General
   "company scandal misconduct fine court ruling",
   "corporate controversy company sued fined",
-  "ESG violation company regulatory action",
-  "company penalized regulatory breach",
-  "corporate misconduct fine billion settlement",
-  "company sued environmental social governance",
   "regulatory enforcement action company fined",
   "company under investigation misconduct",
   "corporate penalty court ruling company",
-  "company found liable damages court",
   "company settlement federal investigation",
-  "corporate wrongdoing company penalty court",
   "company charged violation federal law",
-  "company faces fine regulatory penalty",
-  "corporate scandal ethics violation company",
-  "company ordered pay damages court ruling",
-  "federal probe company misconduct",
-  "company consent decree regulatory violation",
-  "company debarred suspended misconduct",
-  "corporate accountability lawsuit company",
-  # Sector-specific
   "bank money laundering fine settlement",
   "pharmaceutical company bribery fine FDA",
   "tech company privacy data violation fine",
@@ -171,15 +149,10 @@ newsapi_queries <- c(
   "chemical company toxic spill fine",
   "retail company labor violation fine",
   "airline company safety violation fine",
-  "hospital company fraud Medicare fine",
   "defense company bribery corruption fine",
-  "insurance company fraud settlement fine",
-  "real estate company discrimination fine",
   "telecom company privacy violation fine",
   "social media company data privacy fine",
   "clothing brand child labor supply chain",
-  "coffee company labor abuse plantation",
-  "chocolate company child labor cocoa",
   "electronics company labor abuse factory",
   "fast fashion brand sweatshop labor abuse"
 )
@@ -198,22 +171,17 @@ fetch_newsapi <- function(query, api_key) {
     )
 
     resp <- GET(url, timeout(15))
-
     if (status_code(resp) != 200) return(NULL)
 
-    raw  <- httr::content(resp, "text", encoding = "UTF-8")
-    data <- fromJSON(raw, flatten = TRUE)  # flatten=TRUE lost de source$name crash op
-
+    data <- fromJSON(httr::content(resp, "text", encoding = "UTF-8"), flatten = TRUE)
     if (is.null(data$articles) || length(data$articles) == 0) return(NULL)
 
     arts <- data$articles
-
-    # Veilige kolomextractie
-    title_col  <- if ("title"       %in% names(arts)) arts$title       else rep(NA, nrow(arts))
-    desc_col   <- if ("description" %in% names(arts)) arts$description else rep("",  nrow(arts))
-    date_col   <- if ("publishedAt" %in% names(arts)) arts$publishedAt else rep(NA, nrow(arts))
-    url_col    <- if ("url"         %in% names(arts)) arts$url         else rep(NA, nrow(arts))
-    src_col    <- if ("source.name" %in% names(arts)) arts$source.name else rep("newsapi", nrow(arts))
+    title_col <- if ("title"       %in% names(arts)) arts$title       else rep(NA,       nrow(arts))
+    desc_col  <- if ("description" %in% names(arts)) arts$description else rep("",       nrow(arts))
+    date_col  <- if ("publishedAt" %in% names(arts)) arts$publishedAt else rep(NA,       nrow(arts))
+    url_col   <- if ("url"         %in% names(arts)) arts$url         else rep(NA,       nrow(arts))
+    src_col   <- if ("source.name" %in% names(arts)) arts$source.name else rep("newsapi", nrow(arts))
 
     df <- data.frame(
       title       = as.character(title_col),
@@ -222,10 +190,7 @@ fetch_newsapi <- function(query, api_key) {
       link        = as.character(url_col),
       source      = as.character(ifelse(is.na(src_col), "newsapi", src_col)),
       stringsAsFactors = FALSE
-    )
-
-    df <- df %>%
-      filter(!is.na(pub_date), !is.na(title), title != "[Removed]", title != "NA")
+    ) %>% filter(!is.na(pub_date), !is.na(title), title != "[Removed]", title != "NA")
 
     if (nrow(df) == 0) return(NULL)
     return(df)
@@ -237,7 +202,69 @@ fetch_newsapi <- function(query, api_key) {
 }
 
 # ============================================================
-# BRON 2: GOOGLE NEWS RSS (backup)
+# BRON 2: THE GUARDIAN API (onbeperkt gratis)
+# ============================================================
+
+guardian_queries <- c(
+  "company environmental fine pollution",
+  "corporate fraud corruption bribery",
+  "workplace harassment discrimination",
+  "data breach privacy violation company",
+  "child labour supply chain",
+  "oil spill environmental damage",
+  "workers rights violation company",
+  "corporate tax evasion fraud",
+  "human rights violation company",
+  "company safety scandal workers",
+  "environmental violation company penalty",
+  "corporate misconduct scandal",
+  "company fined regulatory breach",
+  "executive misconduct company",
+  "labor abuse exploitation company"
+)
+
+fetch_guardian <- function(query, api_key) {
+  tryCatch({
+    query_enc <- utils::URLencode(query)
+    url <- paste0(
+      "https://content.guardianapis.com/search?",
+      "q=", query_enc,
+      "&from-date=", format(Sys.Date() - 3),
+      "&lang=en",
+      "&page-size=20",
+      "&order-by=newest",
+      "&show-fields=trailText",
+      "&api-key=", api_key
+    )
+
+    resp <- GET(url, timeout(15))
+    if (status_code(resp) != 200) return(NULL)
+
+    data <- fromJSON(httr::content(resp, "text", encoding = "UTF-8"), flatten = TRUE)
+    results <- data$response$results
+    if (is.null(results) || nrow(results) == 0) return(NULL)
+
+    df <- data.frame(
+      title       = as.character(results$webTitle),
+      description = substr(ifelse(is.na(results$fields.trailText), "",
+                                  gsub("<[^>]+>", "", results$fields.trailText)), 1, 300),
+      pub_date    = as.Date(substr(results$webPublicationDate, 1, 10)),
+      link        = as.character(results$webUrl),
+      source      = "The Guardian",
+      stringsAsFactors = FALSE
+    ) %>% filter(!is.na(pub_date), !is.na(title), title != "")
+
+    if (nrow(df) == 0) return(NULL)
+    return(df)
+
+  }, error = function(e) {
+    cat("  Guardian fout:", conditionMessage(e), "\n")
+    return(NULL)
+  })
+}
+
+# ============================================================
+# BRON 3: GOOGLE NEWS RSS (backup)
 # ============================================================
 
 google_queries <- c(
@@ -292,7 +319,8 @@ cat("Tijdstip:", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "\n\n")
 
 all_articles <- list()
 
-cat("NewsAPI ophalen (", length(newsapi_queries), "queries)...\n", sep="")
+# NewsAPI
+cat("NewsAPI ophalen (", length(newsapi_queries), " queries)...\n", sep="")
 for (q in newsapi_queries) {
   result <- fetch_newsapi(q, NEWS_API_KEY)
   if (!is.null(result) && nrow(result) > 0) {
@@ -301,10 +329,25 @@ for (q in newsapi_queries) {
   }
   Sys.sleep(0.3)
 }
-
 newsapi_count <- if (length(all_articles) > 0) sum(sapply(all_articles, nrow)) else 0
 cat("NewsAPI totaal:", newsapi_count, "artikelen\n\n")
 
+# Guardian API
+cat("Guardian API ophalen (", length(guardian_queries), " queries)...\n", sep="")
+guardian_start <- length(all_articles)
+for (q in guardian_queries) {
+  result <- fetch_guardian(q, GUARDIAN_KEY)
+  if (!is.null(result) && nrow(result) > 0) {
+    all_articles[[paste0("guardian_", q)]] <- result
+    cat("  '", substr(q, 1, 45), "': ", nrow(result), "\n", sep="")
+  }
+  Sys.sleep(0.3)
+}
+guardian_count <- if (length(all_articles) > guardian_start)
+  sum(sapply(all_articles[(guardian_start+1):length(all_articles)], nrow)) else 0
+cat("Guardian totaal:", guardian_count, "artikelen\n\n")
+
+# Google News RSS
 cat("Google News RSS ophalen...\n")
 for (q in google_queries) {
   result <- fetch_google_news(q)
@@ -331,6 +374,7 @@ alle_artikelen <- bind_rows(all_articles) %>%
 
 cat("\nArtikelen na filtering:\n")
 cat("  Totaal uniek:", nrow(alle_artikelen), "\n")
+cat("  Guardian:    ", sum(alle_artikelen$source == "The Guardian"), "\n")
 cat("  Google News: ", sum(alle_artikelen$source == "google_news"), "\n\n")
 
 if (nrow(alle_artikelen) == 0) {
