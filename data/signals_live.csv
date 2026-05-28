@@ -4,6 +4,15 @@
 "Thames Water Utilities Ltd","TW",2026-05-28,2026-05-29,2026-06-03,"E",3,NA,NA,NA,NA,"Geen data","Tell us: have you been affected by water supply issues in the south east? "
 "Santos Limited","STO",2026-05-28,2026-05-29,2026-06-03,"Cross",3,NA,NA,NA,NA,"Fout: Unable to import “STO”.
 attempt to set an attribute on NULL","Santos accused of ‘stringing everybody along’ over Narrabri gas project"
+"South East Water","SVW",2026-05-28,2026-05-29,2026-06-03,"E",3,NA,NA,NA,NA,"Fout: Unable to import “SVW”.
+attempt to set an attribute on NULL","‘They’re a private company, run for profit!’: fury in Kent at South East Water’s outages"
+"Burberry Group plc","BRBY",2026-05-28,2026-05-29,2026-06-03,"Cross",3,NA,NA,NA,NA,"Fout: Unable to import “BRBY”.
+cannot open the connection","Burberry boss could earn up to £12.2m under new bonus scheme as company rolls back climate goals"
+"Temu","PDD",2026-05-28,2026-05-29,2026-06-03,"S",3,NA,NA,NA,NA,"Geen data","EU fines Temu for failing to stop sale of illegal and dangerous products "
+"Paramount Global","PARA",2026-05-28,2026-05-29,2026-06-03,"S",1,NA,NA,NA,NA,"Fout: Unable to import “PARA”.
+cannot open the connection","WSL lands record four-year deal with CBS Sports to broadcast games in the US"
+"Paramount Global","PARA",2026-05-28,2026-05-29,2026-06-03,"G",2,NA,NA,NA,NA,"Fout: Unable to import “PARA”.
+cannot open the connection","CBS News ousts top 60 Minutes producer as part of broader shake-up"
 "Ticketmaster Entertainment Inc","LYV",2026-05-27,2026-05-28,2026-06-02,"S",2,NA,NA,NA,NA,"Geen data","Australian BTS fans blast Ticketmaster’s ‘predatory’ tactic of hiding price until tickets go on sale"
 "Alphabet Inc","GOOGL",2026-05-27,2026-05-28,2026-06-02,"S",2,NA,NA,NA,NA,"Geen data","What We Ask Google by Simon Rogers review – the secrets of our search history"
 "Southern Cross Media Group","SXL",2026-05-27,2026-05-28,2026-06-02,"G",2,NA,NA,NA,NA,"Fout: Unable to import “SXL”.
@@ -14,6 +23,9 @@ attempt to set an attribute on NULL","Gina Rinehart bankrolls purchase of 10% st
 "CBS Corporation","PARA",2026-05-27,2026-05-28,2026-06-02,"G",2,NA,NA,NA,NA,"Fout: Unable to import “PARA”.
 cannot open the connection","60 Minutes journalist accuses CBS News of penalizing her after contract not renewed"
 "Manchester United plc","MANU",2026-05-27,2026-05-28,2026-06-02,"G",2,NA,NA,NA,NA,"Geen data","Manchester United take £22m hit from sacking of Ruben Amorim"
+"Singha Corporation Public Company Limited","TSCO",2026-05-27,2026-05-28,2026-06-02,"S",3,NA,NA,NA,NA,"Geen data","Brit who claims he was sexually abused by his brother - the heir to Thailand's Singha beer empire - reveals new details of the 'attacks' and says he was paid by his family to keep quiet"
+"Condé Nast","CNDT",2026-05-27,2026-05-28,2026-06-02,"S",2,NA,NA,NA,NA,"Geen data","Condé Nast Settles With Union 6 Months After Staffers Fired Over HR Confrontation"
+"BP plc","BP",2026-05-27,2026-05-28,2026-06-02,"G",3,NA,NA,NA,NA,"Geen data","BP chairman Albert Manifold ousted amid misconduct allegations after just eight months"
 "Microsoft Corporation","MSFT",2026-05-26,2026-05-27,2026-06-01,"G",2,412.67,412.67,0,-0.1,"Open","Microsoft agrees to pay $250m to settle lawsuit over Activision Blizzard deal"
 "Independant Media (Pty) Ltd / News24","INL",2026-05-26,2026-05-27,2026-06-01,"G",3,NA,NA,NA,NA,"Fout: Unable to import “INL”.
 attempt to set an attribute on NULL","News24 | The ‘housewife’, the driver, the pensioner and the dodgy lottery grant"
@@ -31,6 +43,10 @@ cannot open the connection","Inquiry into Post Office Horizon scandal faces five
 "Channel 4 Television Corporation (via parent company)","CMCSA",2026-05-26,2026-05-27,2026-06-01,"S",3,25.22,25.22,0,-0.1,"Open","'I felt used, dirty, like a prostitute': After two women claim they were raped on Channel 4's Married At First Sight, another 'bride' tells of her own deeply traumatising experience"
 "Evolution AB","EVO",2026-05-26,2026-05-27,2026-06-01,"S",2,2.87,2.87,0,-0.1,"Open","Who is Your Ancient Fortune Poseidon Megaways Customer?"
 "Teck Resources Limited","TECK",2026-05-26,2026-05-27,2026-06-01,"E",3,65.24,65.24,0,-0.1,"Open","Mining giant polluted Quebec waters for over a decade before $100M fine. What took so long?"
+"Meta Platforms Inc","META",2026-05-26,2026-05-27,2026-06-01,"S",3,635.26,635.26,0,-0.1,"Open","Proxy Impact: Shareholders Move to Link Meta Executive Pay to Child Safety as Landmark Lawsuit Losses Mount"
+"Sportradar Group AG","SRAD",2026-05-26,2026-05-27,2026-06-01,"Cross",3,12.89,12.89,0,-0.1,"Open","SRAD Court Notification: Sportradar Gambling Allegations and Corresponding 22% Stock Drop Trigger Shareholder Class Action for Securities Fraud"
+"BP plc","BP",2026-05-26,2026-05-27,2026-06-01,"G",3,41.65,41.65,0,-0.1,"Open","BP ousts Chair Albert Manifold over governance and conduct issues"
+"Phreesia, Inc.","PHR",2026-05-26,2026-05-27,2026-06-01,"G",2,9.13,9.13,0,-0.1,"Open","REMINDER: Phreesia, Inc. Investors With Significant Losses Must Act By July 13, 2026"
 "Sportradar","SRAD",2026-05-25,2026-05-26,2026-05-31,"G",3,12.99,12.89,-0.7698,0.6698,"Open","$SRAD Shareholder Announcement: Sportradar may have Misled Investors about its Revenue Sources – Contact BFA Law about the Pending Securities Fraud Class Action"
 "Commvault Systems Inc","CVLT",2026-05-25,2026-05-26,2026-05-31,"G",3,108.09,107.24,-0.7864,0.6864,"Open","$CVLT Shareholder Announcement: Commvault may have Misled Investors about its ARR Growth Issues – Contact BFA Law about the Pending Securities Fraud Class Action"
 "NevGold Corp","NVGL",2026-05-25,2026-05-26,2026-05-31,"E",2,NA,NA,NA,NA,"Fout: Unable to import “NVGL”.
@@ -46,5 +62,7 @@ attempt to set an attribute on NULL","Love Island star Sharon Gaffka calls for M
 "BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,87.83,1.5493,-1.6493,"Open","Revealed: the internal BHP memo that slammed the brakes on world’s biggest miner’s climate push"
 "BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,87.83,1.5493,-1.6493,"Open","Morning Mail: BHP’s climate fail revealed, pope denounces AI, life on the world’s longest golf course"
 "BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,87.83,1.5493,-1.6493,"Open","BHP quietly scrapped plan to build Pilbara plant that would have drastically cut emissions"
+"Channel 4 Television Corporation (waarschijnlijk deel van All3Media/ITVX)","ITV",2026-05-25,2026-05-26,2026-05-31,"S",3,NA,NA,NA,NA,"Fout: Unable to import “ITV”.
+attempt to set an attribute on NULL","Love Island star Sharon Gaffka calls for MAFS UK bosses to introduce 'specialist safeguarding professionals separate from production' after stars alleged welfare measures fell short following sexual assault claims"
 "Warner Bros. Discovery","WBD",2026-05-24,2026-05-25,2026-05-30,"S",3,27,27.14,0.5185,-0.6185,"Open","EXCLUSIVE: Massive Reality TV Show 'Set for Axe' After Female Contestants' Rape and Sex Abuse Allegations Air — As Its US Season Launches"
 "Alphabet Inc","GOOGL",2026-05-24,2026-05-25,2026-05-30,"S",2,388.88,388.83,-0.0129,-0.0871,"Open","Google has seriously leaned into AI enshittification lately"
