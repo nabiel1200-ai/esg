@@ -1,8 +1,21 @@
 "company","ticker","pub_date","entry_date","exit_date","pillar","severity","entry_price","exit_price","stock_return","short_return","status","title"
 "Moderna Inc","MRNA",2026-05-30,2026-05-31,2026-06-05,"S",3,NA,NA,NA,NA,"Geen data","Trump order endorses plan to halve vaccines recommended for children"
+"Humana Inc","HUM",2026-05-30,2026-05-31,2026-06-05,"G",3,NA,NA,NA,NA,"Geen data","Humana Investigation Continued: Kahn Swick & Foti, LLC Continues to Investigate the Officers and Directors of Humana Inc. - HUM"
+"United Airlines Holdings Inc","UAL",2026-05-30,2026-05-31,2026-06-05,"S",2,NA,NA,NA,NA,"Geen data","Chicago-to-Minneapolis United Airlines flight diverted after attempted cockpit breach"
+"Everyman Cinema","EVCM",2026-05-30,2026-05-31,2026-06-05,"G",2,NA,NA,NA,NA,"Geen data","What’s gone wrong at Everyman and can the luxury cinema chain regain its magic?"
+"Merck & Co., Inc.","MRK",2026-05-30,2026-05-31,2026-06-05,"S",3,NA,NA,NA,NA,"Geen data","Trump order endorses plan to halve vaccines recommended for children"
+"Gazprom","GAZP",2026-05-30,2026-05-31,2026-06-05,"S",3,NA,NA,NA,NA,"Fout: Unable to import “GAZP”.
+cannot open the connection","Tearful Oliynykova demands Shnaider face sanctions for ‘supporting war’"
 "KPMG","KPM",2026-05-29,2026-05-30,2026-06-04,"G",3,NA,NA,NA,NA,"Fout: Unable to import “KPM”.
 attempt to set an attribute on NULL","KPMG Australia’s CEO Andrew Yates quits over whistleblower scandal"
 "The Guardian Media Group","GMG",2026-05-29,2026-05-30,2026-06-04,"S",1,NA,NA,NA,NA,"Fout: Unable to import “GMG”.
+attempt to set an attribute on NULL","Caroline Marland, trailblazing Guardian executive, dies aged 80"
+"Kroger Co","KR",2026-05-29,2026-05-30,2026-06-04,"S",2,NA,NA,NA,NA,"Geen data","Kroger forced to make costly store fix after federal lawsuit"
+"Take-Two Interactive Software, Inc.","TTWO",2026-05-29,2026-05-30,2026-06-04,"S",2,NA,NA,NA,NA,"Geen data","Rockstar workers formed a union—why? #gaming"
+"Meta Platforms Inc","META",2026-05-29,2026-05-30,2026-06-04,"G",3,NA,NA,NA,NA,"Geen data","Sen. Jay Morris mixed Metas data-center deal with his own real estate business - The Lens"
+"The Walt Disney Company","DIS",2026-05-29,2026-05-30,2026-06-04,"G",3,NA,NA,NA,NA,"Geen data","Disney is calling Trump’s FCC ‘unconstitutional.’ It paid him $15 million 2 years ago"
+"The Walt Disney Company","DIS",2026-05-29,2026-05-30,2026-06-04,"S",3,NA,NA,NA,NA,"Geen data","FCC Details Disney's History of Alleged Discrimination Based on Race, Gender, Other Protected Classes"
+"Guardian Media Group","GMG",2026-05-29,2026-05-30,2026-06-04,"S",1,NA,NA,NA,NA,"Fout: Unable to import “GMG”.
 attempt to set an attribute on NULL","Caroline Marland, trailblazing Guardian executive, dies aged 80"
 "3M Company","MMM",2026-05-28,2026-05-29,2026-06-03,"E",3,153.13,153.13,0,-0.1,"Open","Australia sues 3M for record $2bn sum over Pfas ‘forever chemicals’ in firefighting foam"
 "Meta Platforms Inc","META",2026-05-28,2026-05-29,2026-06-03,"S",2,632.51,632.51,0,-0.1,"Open","‘Instagram truly is the new LinkedIn’: why gen Z is using social media to get hired"
@@ -35,6 +48,7 @@ cannot open the connection","CBS News Names Investigative Journalist, Best-Selli
 "Alphabet Inc","GOOGL",2026-05-28,2026-05-29,2026-06-03,"G",3,380.34,380.34,0,-0.1,"Open","Google engineer used confidential info to win $1.2M in Polymarket bets, feds say"
 "Burberry Group PLC","BRBY",2026-05-28,2026-05-29,2026-06-03,"Cross",3,NA,NA,NA,NA,"Fout: Unable to import “BRBY”.
 cannot open the connection","Burberry boss could earn up to £12.2m under new bonus scheme as company rolls back climate goals"
+"TKO Group Holdings (WWE/Endeavor merger)","TKO",2026-05-28,2026-05-29,2026-06-03,"G",3,205.18,205.18,0,-0.1,"Open","Delaware Court Sanctions Vince McMahon, Nick Khan in TKO Lawsuit"
 "Ticketmaster Entertainment Inc","LYV",2026-05-27,2026-05-28,2026-06-02,"S",2,167.03,168.41,0.8262,-0.9262,"Open","Australian BTS fans blast Ticketmaster’s ‘predatory’ tactic of hiding price until tickets go on sale"
 "Alphabet Inc","GOOGL",2026-05-27,2026-05-28,2026-06-02,"S",2,390.13,380.34,-2.5094,2.4094,"Open","What We Ask Google by Simon Rogers review – the secrets of our search history"
 "Southern Cross Media Group","SXL",2026-05-27,2026-05-28,2026-06-02,"G",2,NA,NA,NA,NA,"Fout: Unable to import “SXL”.
