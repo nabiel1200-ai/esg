@@ -1,4 +1,15 @@
 "company","ticker","pub_date","entry_date","exit_date","pillar","severity","entry_price","exit_price","stock_return","short_return","status","title"
+"Palantir Technologies","PLTR",2026-06-01,2026-06-02,2026-06-07,"Cross",3,NA,NA,NA,NA,"Fout: Unable to import “PLTR”.
+attempt to set an attribute on NULL","FCA’s Palantir deal could expose UK financial data to Trump’s US, critics fear"
+"Manchester Airport Group / Stansted Airport","MAG",2026-06-01,2026-06-02,2026-06-07,"S",2,NA,NA,NA,NA,"Fout: Unable to import “MAG”.
+cannot open the connection","‘Cheap’ parking at Stansted airport cost me hundreds of pounds"
+"Temu","PDD",2026-05-31,2026-06-01,2026-06-06,"S",3,NA,NA,NA,NA,"Geen data","European Commission Fines Temu €200 Million Over Illegal and Unsafe Product Listings Under Digital Services Act"
+"Arm Holdings","ARM",2026-05-31,2026-06-01,2026-06-06,"G",2,NA,NA,NA,NA,"Geen data","Arm boss in line for billion-dollar payday if chipmaker hits targets "
+"McAfee Corp","MCFE",2026-05-31,2026-06-01,2026-06-06,"S",2,NA,NA,NA,NA,"Fout: Unable to import “MCFE”.
+cannot open the connection","‘Your devices could be at risk’: how McAfee antivirus scams trade on fear"
+"Meta Platforms Inc","META",2026-05-31,2026-06-01,2026-06-06,"G",3,NA,NA,NA,NA,"Geen data"," Meta legal action forces Facebook whistleblower to sit in silence at Hay festival"
+"Plymouth Argyle Football Club","ARGYLE",2026-05-31,2026-06-01,2026-06-06,"S",2,NA,NA,NA,NA,"Fout: Unable to import “ARGYLE”.
+cannot open the connection","‘Nearly all’ Plymouth Women players will be let go after finding out by email"
 "Moderna Inc","MRNA",2026-05-30,2026-05-31,2026-06-05,"S",3,NA,NA,NA,NA,"Geen data","Trump order endorses plan to halve vaccines recommended for children"
 "Humana Inc","HUM",2026-05-30,2026-05-31,2026-06-05,"G",3,NA,NA,NA,NA,"Geen data","Humana Investigation Continued: Kahn Swick & Foti, LLC Continues to Investigate the Officers and Directors of Humana Inc. - HUM"
 "United Airlines Holdings Inc","UAL",2026-05-30,2026-05-31,2026-06-05,"S",2,NA,NA,NA,NA,"Geen data","Chicago-to-Minneapolis United Airlines flight diverted after attempted cockpit breach"
@@ -17,6 +28,9 @@ attempt to set an attribute on NULL","Caroline Marland, trailblazing Guardian ex
 "The Walt Disney Company","DIS",2026-05-29,2026-05-30,2026-06-04,"S",3,NA,NA,NA,NA,"Geen data","FCC Details Disney's History of Alleged Discrimination Based on Race, Gender, Other Protected Classes"
 "Guardian Media Group","GMG",2026-05-29,2026-05-30,2026-06-04,"S",1,NA,NA,NA,NA,"Fout: Unable to import “GMG”.
 attempt to set an attribute on NULL","Caroline Marland, trailblazing Guardian executive, dies aged 80"
+"The Kroger Co.","KR",2026-05-29,2026-05-30,2026-06-04,"S",2,NA,NA,NA,NA,"Geen data","Kroger forced to make costly store fix after federal lawsuit"
+"Klynveld Peat Marwick Goerdeler (KPMG)","KPM",2026-05-29,2026-05-30,2026-06-04,"G",3,NA,NA,NA,NA,"Fout: Unable to import “KPM”.
+attempt to set an attribute on NULL","KPMG Australia’s CEO Andrew Yates quits over whistleblower scandal"
 "3M Company","MMM",2026-05-28,2026-05-29,2026-06-03,"E",3,153.13,153.13,0,-0.1,"Open","Australia sues 3M for record $2bn sum over Pfas ‘forever chemicals’ in firefighting foam"
 "Meta Platforms Inc","META",2026-05-28,2026-05-29,2026-06-03,"S",2,632.51,632.51,0,-0.1,"Open","‘Instagram truly is the new LinkedIn’: why gen Z is using social media to get hired"
 "Thames Water Utilities Ltd","TW",2026-05-28,2026-05-29,2026-06-03,"E",3,100.25,100.25,0,-0.1,"Open","Tell us: have you been affected by water supply issues in the south east? "
