@@ -3,11 +3,34 @@
 attempt to set an attribute on NULL","FCA’s Palantir deal could expose UK financial data to Trump’s US, critics fear"
 "Manchester Airport Group / Stansted Airport","MAG",2026-06-01,2026-06-02,2026-06-07,"S",2,NA,NA,NA,NA,"Fout: Unable to import “MAG”.
 cannot open the connection","‘Cheap’ parking at Stansted airport cost me hundreds of pounds"
-"Temu","PDD",2026-05-31,2026-06-01,2026-06-06,"S",3,NA,NA,NA,NA,"Geen data","European Commission Fines Temu €200 Million Over Illegal and Unsafe Product Listings Under Digital Services Act"
-"Arm Holdings","ARM",2026-05-31,2026-06-01,2026-06-06,"G",2,NA,NA,NA,NA,"Geen data","Arm boss in line for billion-dollar payday if chipmaker hits targets "
+"Alphabet Inc","GOOGL",2026-06-01,2026-06-02,2026-06-07,"E",1,NA,NA,NA,NA,"Fout: Unable to import “GOOGL”.
+attempt to set an attribute on NULL","Debugging: Google requests permission to release 32m mosquitoes in California and Florida"
+"Wise","WISE",2026-06-01,2026-06-02,2026-06-07,"G",3,NA,NA,NA,NA,"Fout: Unable to import “WISE”.
+attempt to set an attribute on NULL","Wise investigated in Belgium over money-laundering control concerns"
+"Post Office Ltd","POL",2026-06-01,2026-06-02,2026-06-07,"G",3,NA,NA,NA,NA,"Fout: Unable to import “POL”.
+cannot open the connection","‘Utter disaster’: Alan Bates attacks schemes compensating post office operators"
+"Meta Platforms Inc","META",2026-06-01,2026-06-02,2026-06-07,"G",2,NA,NA,NA,NA,"Fout: Unable to import “META”.
+attempt to set an attribute on NULL","Meta whistleblower’s lawyer says he too is prevented from promoting her book"
+"Royal Mail Holdings plc","RMG",2026-06-01,2026-06-02,2026-06-07,"S",2,NA,NA,NA,NA,"Fout: Unable to import “RMG”.
+cannot open the connection"," Royal Mail investigated again as almost a quarter of first-class post arrives late"
+"Manchester Airports Group","MAG",2026-06-01,2026-06-02,2026-06-07,"S",2,NA,NA,NA,NA,"Fout: Unable to import “MAG”.
+cannot open the connection","‘Cheap’ parking at Stansted airport cost me hundreds of pounds"
+"Google (Alphabet Inc)","GOOGL",2026-06-01,2026-06-02,2026-06-07,"G",2,NA,NA,NA,NA,"Fout: Unable to import “GOOGL”.
+attempt to set an attribute on NULL","Tech billionaires are spending unprecedented sums in California races. Experts say it’s the tip of the iceberg"
+"easyJet plc","EZJ",2026-06-01,2026-06-02,2026-06-07,"G",2,NA,NA,NA,NA,"Fout: Unable to import “EZJ”.
+attempt to set an attribute on NULL","EasyJet is an obvious takeover target, but US approach may not be a flyer | Nils Pratley"
+"GB News","GNEW",2026-06-01,2026-06-02,2026-06-07,"G",2,NA,NA,NA,NA,"Fout: Unable to import “GNEW”.
+cannot open the connection","Ofcom ex-chair: broadcasters embarrassed by GB News following ‘majority agenda’"
+"CBS Corporation","PARA",2026-06-01,2026-06-02,2026-06-07,"G",2,NA,NA,NA,NA,"Fout: Unable to import “PARA”.
+cannot open the connection","60 Minutes correspondent Scott Pelley accuses Bari Weiss of ‘murdering’ show"
+"Temu","PDD",2026-05-31,2026-06-01,2026-06-06,"S",3,NA,NA,NA,NA,"Fout: Unable to import “PDD”.
+attempt to set an attribute on NULL","European Commission Fines Temu €200 Million Over Illegal and Unsafe Product Listings Under Digital Services Act"
+"Arm Holdings","ARM",2026-05-31,2026-06-01,2026-06-06,"G",2,NA,NA,NA,NA,"Fout: Unable to import “ARM”.
+attempt to set an attribute on NULL","Arm boss in line for billion-dollar payday if chipmaker hits targets "
 "McAfee Corp","MCFE",2026-05-31,2026-06-01,2026-06-06,"S",2,NA,NA,NA,NA,"Fout: Unable to import “MCFE”.
 cannot open the connection","‘Your devices could be at risk’: how McAfee antivirus scams trade on fear"
-"Meta Platforms Inc","META",2026-05-31,2026-06-01,2026-06-06,"G",3,NA,NA,NA,NA,"Geen data"," Meta legal action forces Facebook whistleblower to sit in silence at Hay festival"
+"Meta Platforms Inc","META",2026-05-31,2026-06-01,2026-06-06,"G",3,NA,NA,NA,NA,"Fout: Unable to import “META”.
+attempt to set an attribute on NULL"," Meta legal action forces Facebook whistleblower to sit in silence at Hay festival"
 "Plymouth Argyle Football Club","ARGYLE",2026-05-31,2026-06-01,2026-06-06,"S",2,NA,NA,NA,NA,"Fout: Unable to import “ARGYLE”.
 cannot open the connection","‘Nearly all’ Plymouth Women players will be let go after finding out by email"
 "Moderna Inc","MRNA",2026-05-30,2026-05-31,2026-06-05,"S",3,NA,NA,NA,NA,"Geen data","Trump order endorses plan to halve vaccines recommended for children"
@@ -17,6 +40,7 @@ cannot open the connection","‘Nearly all’ Plymouth Women players will be let
 "Merck & Co., Inc.","MRK",2026-05-30,2026-05-31,2026-06-05,"S",3,NA,NA,NA,NA,"Geen data","Trump order endorses plan to halve vaccines recommended for children"
 "Gazprom","GAZP",2026-05-30,2026-05-31,2026-06-05,"S",3,NA,NA,NA,NA,"Fout: Unable to import “GAZP”.
 cannot open the connection","Tearful Oliynykova demands Shnaider face sanctions for ‘supporting war’"
+"Merck & Co.","MRK",2026-05-30,2026-05-31,2026-06-05,"S",3,NA,NA,NA,NA,"Geen data","Trump order endorses plan to halve vaccines recommended for children"
 "KPMG","KPM",2026-05-29,2026-05-30,2026-06-04,"G",3,NA,NA,NA,NA,"Fout: Unable to import “KPM”.
 attempt to set an attribute on NULL","KPMG Australia’s CEO Andrew Yates quits over whistleblower scandal"
 "The Guardian Media Group","GMG",2026-05-29,2026-05-30,2026-06-04,"S",1,NA,NA,NA,NA,"Fout: Unable to import “GMG”.
