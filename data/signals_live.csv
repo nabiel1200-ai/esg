@@ -1,146 +1,148 @@
 "company","ticker","pub_date","entry_date","exit_date","pillar","severity","entry_price","exit_price","stock_return","short_return","status","title"
-"Palantir Technologies","PLTR",2026-06-01,2026-06-02,2026-06-07,"Cross",3,NA,NA,NA,NA,"Fout: Unable to import “PLTR”.
-attempt to set an attribute on NULL","FCA’s Palantir deal could expose UK financial data to Trump’s US, critics fear"
+"Palantir Technologies Inc","PLTR",2026-06-02,2026-06-03,2026-06-08,"Cross",3,NA,NA,NA,NA,"Geen data","Tuesday briefing: Palantir’s rise – and why so many oppose its role in the British state"
+"BP plc","BP",2026-06-02,2026-06-03,2026-06-08,"G",2,NA,NA,NA,NA,"Geen data","BP backs Amanda Blanc to lead search for new chair despite investor concerns"
+"Palantir Technologies","PLTR",2026-06-01,2026-06-02,2026-06-07,"Cross",3,NA,NA,NA,NA,"Geen data","FCA’s Palantir deal could expose UK financial data to Trump’s US, critics fear"
 "Manchester Airport Group / Stansted Airport","MAG",2026-06-01,2026-06-02,2026-06-07,"S",2,NA,NA,NA,NA,"Fout: Unable to import “MAG”.
 cannot open the connection","‘Cheap’ parking at Stansted airport cost me hundreds of pounds"
-"Alphabet Inc","GOOGL",2026-06-01,2026-06-02,2026-06-07,"E",1,NA,NA,NA,NA,"Fout: Unable to import “GOOGL”.
-attempt to set an attribute on NULL","Debugging: Google requests permission to release 32m mosquitoes in California and Florida"
-"Wise","WISE",2026-06-01,2026-06-02,2026-06-07,"G",3,NA,NA,NA,NA,"Fout: Unable to import “WISE”.
-attempt to set an attribute on NULL","Wise investigated in Belgium over money-laundering control concerns"
+"Alphabet Inc","GOOGL",2026-06-01,2026-06-02,2026-06-07,"E",1,NA,NA,NA,NA,"Geen data","Debugging: Google requests permission to release 32m mosquitoes in California and Florida"
+"Wise","WISE",2026-06-01,2026-06-02,2026-06-07,"G",3,NA,NA,NA,NA,"Geen data","Wise investigated in Belgium over money-laundering control concerns"
 "Post Office Ltd","POL",2026-06-01,2026-06-02,2026-06-07,"G",3,NA,NA,NA,NA,"Fout: Unable to import “POL”.
 cannot open the connection","‘Utter disaster’: Alan Bates attacks schemes compensating post office operators"
-"Meta Platforms Inc","META",2026-06-01,2026-06-02,2026-06-07,"G",2,NA,NA,NA,NA,"Fout: Unable to import “META”.
-attempt to set an attribute on NULL","Meta whistleblower’s lawyer says he too is prevented from promoting her book"
+"Meta Platforms Inc","META",2026-06-01,2026-06-02,2026-06-07,"G",2,NA,NA,NA,NA,"Geen data","Meta whistleblower’s lawyer says he too is prevented from promoting her book"
 "Royal Mail Holdings plc","RMG",2026-06-01,2026-06-02,2026-06-07,"S",2,NA,NA,NA,NA,"Fout: Unable to import “RMG”.
 cannot open the connection"," Royal Mail investigated again as almost a quarter of first-class post arrives late"
 "Manchester Airports Group","MAG",2026-06-01,2026-06-02,2026-06-07,"S",2,NA,NA,NA,NA,"Fout: Unable to import “MAG”.
 cannot open the connection","‘Cheap’ parking at Stansted airport cost me hundreds of pounds"
-"Google (Alphabet Inc)","GOOGL",2026-06-01,2026-06-02,2026-06-07,"G",2,NA,NA,NA,NA,"Fout: Unable to import “GOOGL”.
-attempt to set an attribute on NULL","Tech billionaires are spending unprecedented sums in California races. Experts say it’s the tip of the iceberg"
-"easyJet plc","EZJ",2026-06-01,2026-06-02,2026-06-07,"G",2,NA,NA,NA,NA,"Fout: Unable to import “EZJ”.
-attempt to set an attribute on NULL","EasyJet is an obvious takeover target, but US approach may not be a flyer | Nils Pratley"
+"Google (Alphabet Inc)","GOOGL",2026-06-01,2026-06-02,2026-06-07,"G",2,NA,NA,NA,NA,"Geen data","Tech billionaires are spending unprecedented sums in California races. Experts say it’s the tip of the iceberg"
+"easyJet plc","EZJ",2026-06-01,2026-06-02,2026-06-07,"G",2,NA,NA,NA,NA,"Geen data","EasyJet is an obvious takeover target, but US approach may not be a flyer | Nils Pratley"
 "GB News","GNEW",2026-06-01,2026-06-02,2026-06-07,"G",2,NA,NA,NA,NA,"Fout: Unable to import “GNEW”.
 cannot open the connection","Ofcom ex-chair: broadcasters embarrassed by GB News following ‘majority agenda’"
 "CBS Corporation","PARA",2026-06-01,2026-06-02,2026-06-07,"G",2,NA,NA,NA,NA,"Fout: Unable to import “PARA”.
 cannot open the connection","60 Minutes correspondent Scott Pelley accuses Bari Weiss of ‘murdering’ show"
-"Temu","PDD",2026-05-31,2026-06-01,2026-06-06,"S",3,NA,NA,NA,NA,"Fout: Unable to import “PDD”.
-attempt to set an attribute on NULL","European Commission Fines Temu €200 Million Over Illegal and Unsafe Product Listings Under Digital Services Act"
-"Arm Holdings","ARM",2026-05-31,2026-06-01,2026-06-06,"G",2,NA,NA,NA,NA,"Fout: Unable to import “ARM”.
-attempt to set an attribute on NULL","Arm boss in line for billion-dollar payday if chipmaker hits targets "
+"Palantir Technologies Inc","PLTR",2026-06-01,2026-06-02,2026-06-07,"S",3,NA,NA,NA,NA,"Geen data","FCA’s Palantir deal could expose UK financial data to Trump’s US, critics fear"
+"Post Office Ltd (Parent: International Distributions Services plc)","IDS",2026-06-01,2026-06-02,2026-06-07,"G",3,NA,NA,NA,NA,"Fout: Unable to import “IDS”.
+attempt to set an attribute on NULL","‘Utter disaster’: Alan Bates attacks schemes compensating post office operators"
+"Meta Platforms Inc","META",2026-06-01,2026-06-02,2026-06-07,"G",3,NA,NA,NA,NA,"Geen data","Hackers trick Meta AI support bot to infiltrate Obama White House Instagram account"
+"Alphabet Inc.","GOOGL",2026-06-01,2026-06-02,2026-06-07,"G",2,NA,NA,NA,NA,"Geen data","Tech billionaires are spending unprecedented sums in California races. Experts say it’s the tip of the iceberg"
+"Manchester Airport Group (Stansted Airport)","MAG",2026-06-01,2026-06-02,2026-06-07,"S",2,NA,NA,NA,NA,"Fout: Unable to import “MAG”.
+cannot open the connection","‘Cheap’ parking at Stansted airport cost me hundreds of pounds"
+"Temu","PDD",2026-05-31,2026-06-01,2026-06-06,"S",3,87.24,87.24,0,-0.1,"Open","European Commission Fines Temu €200 Million Over Illegal and Unsafe Product Listings Under Digital Services Act"
+"Arm Holdings","ARM",2026-05-31,2026-06-01,2026-06-06,"G",2,408.85,408.85,0,-0.1,"Open","Arm boss in line for billion-dollar payday if chipmaker hits targets "
 "McAfee Corp","MCFE",2026-05-31,2026-06-01,2026-06-06,"S",2,NA,NA,NA,NA,"Fout: Unable to import “MCFE”.
 cannot open the connection","‘Your devices could be at risk’: how McAfee antivirus scams trade on fear"
-"Meta Platforms Inc","META",2026-05-31,2026-06-01,2026-06-06,"G",3,NA,NA,NA,NA,"Fout: Unable to import “META”.
-attempt to set an attribute on NULL"," Meta legal action forces Facebook whistleblower to sit in silence at Hay festival"
+"Meta Platforms Inc","META",2026-05-31,2026-06-01,2026-06-06,"G",3,600.47,600.47,0,-0.1,"Open"," Meta legal action forces Facebook whistleblower to sit in silence at Hay festival"
 "Plymouth Argyle Football Club","ARGYLE",2026-05-31,2026-06-01,2026-06-06,"S",2,NA,NA,NA,NA,"Fout: Unable to import “ARGYLE”.
 cannot open the connection","‘Nearly all’ Plymouth Women players will be let go after finding out by email"
-"Moderna Inc","MRNA",2026-05-30,2026-05-31,2026-06-05,"S",3,NA,NA,NA,NA,"Geen data","Trump order endorses plan to halve vaccines recommended for children"
-"Humana Inc","HUM",2026-05-30,2026-05-31,2026-06-05,"G",3,NA,NA,NA,NA,"Geen data","Humana Investigation Continued: Kahn Swick & Foti, LLC Continues to Investigate the Officers and Directors of Humana Inc. - HUM"
-"United Airlines Holdings Inc","UAL",2026-05-30,2026-05-31,2026-06-05,"S",2,NA,NA,NA,NA,"Geen data","Chicago-to-Minneapolis United Airlines flight diverted after attempted cockpit breach"
-"Everyman Cinema","EVCM",2026-05-30,2026-05-31,2026-06-05,"G",2,NA,NA,NA,NA,"Geen data","What’s gone wrong at Everyman and can the luxury cinema chain regain its magic?"
-"Merck & Co., Inc.","MRK",2026-05-30,2026-05-31,2026-06-05,"S",3,NA,NA,NA,NA,"Geen data","Trump order endorses plan to halve vaccines recommended for children"
+"McAfee Corporation","MCFE",2026-05-31,2026-06-01,2026-06-06,"S",2,NA,NA,NA,NA,"Fout: Unable to import “MCFE”.
+cannot open the connection","‘Your devices could be at risk’: how McAfee antivirus scams trade on fear"
+"Moderna Inc","MRNA",2026-05-30,2026-05-31,2026-06-05,"S",3,46.06,46.06,0,-0.1,"Open","Trump order endorses plan to halve vaccines recommended for children"
+"Humana Inc","HUM",2026-05-30,2026-05-31,2026-06-05,"G",3,328.31,328.31,0,-0.1,"Open","Humana Investigation Continued: Kahn Swick & Foti, LLC Continues to Investigate the Officers and Directors of Humana Inc. - HUM"
+"United Airlines Holdings Inc","UAL",2026-05-30,2026-05-31,2026-06-05,"S",2,111.76,111.76,0,-0.1,"Open","Chicago-to-Minneapolis United Airlines flight diverted after attempted cockpit breach"
+"Everyman Cinema","EVCM",2026-05-30,2026-05-31,2026-06-05,"G",2,11.25,11.25,0,-0.1,"Open","What’s gone wrong at Everyman and can the luxury cinema chain regain its magic?"
+"Merck & Co., Inc.","MRK",2026-05-30,2026-05-31,2026-06-05,"S",3,115.17,115.17,0,-0.1,"Open","Trump order endorses plan to halve vaccines recommended for children"
 "Gazprom","GAZP",2026-05-30,2026-05-31,2026-06-05,"S",3,NA,NA,NA,NA,"Fout: Unable to import “GAZP”.
 cannot open the connection","Tearful Oliynykova demands Shnaider face sanctions for ‘supporting war’"
-"Merck & Co.","MRK",2026-05-30,2026-05-31,2026-06-05,"S",3,NA,NA,NA,NA,"Geen data","Trump order endorses plan to halve vaccines recommended for children"
+"Merck & Co.","MRK",2026-05-30,2026-05-31,2026-06-05,"S",3,115.17,115.17,0,-0.1,"Open","Trump order endorses plan to halve vaccines recommended for children"
 "KPMG","KPM",2026-05-29,2026-05-30,2026-06-04,"G",3,NA,NA,NA,NA,"Fout: Unable to import “KPM”.
 attempt to set an attribute on NULL","KPMG Australia’s CEO Andrew Yates quits over whistleblower scandal"
 "The Guardian Media Group","GMG",2026-05-29,2026-05-30,2026-06-04,"S",1,NA,NA,NA,NA,"Fout: Unable to import “GMG”.
 attempt to set an attribute on NULL","Caroline Marland, trailblazing Guardian executive, dies aged 80"
-"Kroger Co","KR",2026-05-29,2026-05-30,2026-06-04,"S",2,NA,NA,NA,NA,"Geen data","Kroger forced to make costly store fix after federal lawsuit"
-"Take-Two Interactive Software, Inc.","TTWO",2026-05-29,2026-05-30,2026-06-04,"S",2,NA,NA,NA,NA,"Geen data","Rockstar workers formed a union—why? #gaming"
-"Meta Platforms Inc","META",2026-05-29,2026-05-30,2026-06-04,"G",3,NA,NA,NA,NA,"Geen data","Sen. Jay Morris mixed Metas data-center deal with his own real estate business - The Lens"
-"The Walt Disney Company","DIS",2026-05-29,2026-05-30,2026-06-04,"G",3,NA,NA,NA,NA,"Geen data","Disney is calling Trump’s FCC ‘unconstitutional.’ It paid him $15 million 2 years ago"
-"The Walt Disney Company","DIS",2026-05-29,2026-05-30,2026-06-04,"S",3,NA,NA,NA,NA,"Geen data","FCC Details Disney's History of Alleged Discrimination Based on Race, Gender, Other Protected Classes"
+"Kroger Co","KR",2026-05-29,2026-05-30,2026-06-04,"S",2,61.52,61.52,0,-0.1,"Open","Kroger forced to make costly store fix after federal lawsuit"
+"Take-Two Interactive Software, Inc.","TTWO",2026-05-29,2026-05-30,2026-06-04,"S",2,226.98,226.98,0,-0.1,"Open","Rockstar workers formed a union—why? #gaming"
+"Meta Platforms Inc","META",2026-05-29,2026-05-30,2026-06-04,"G",3,600.47,600.47,0,-0.1,"Open","Sen. Jay Morris mixed Metas data-center deal with his own real estate business - The Lens"
+"The Walt Disney Company","DIS",2026-05-29,2026-05-30,2026-06-04,"G",3,102.85,102.85,0,-0.1,"Open","Disney is calling Trump’s FCC ‘unconstitutional.’ It paid him $15 million 2 years ago"
+"The Walt Disney Company","DIS",2026-05-29,2026-05-30,2026-06-04,"S",3,102.85,102.85,0,-0.1,"Open","FCC Details Disney's History of Alleged Discrimination Based on Race, Gender, Other Protected Classes"
 "Guardian Media Group","GMG",2026-05-29,2026-05-30,2026-06-04,"S",1,NA,NA,NA,NA,"Fout: Unable to import “GMG”.
 attempt to set an attribute on NULL","Caroline Marland, trailblazing Guardian executive, dies aged 80"
-"The Kroger Co.","KR",2026-05-29,2026-05-30,2026-06-04,"S",2,NA,NA,NA,NA,"Geen data","Kroger forced to make costly store fix after federal lawsuit"
+"The Kroger Co.","KR",2026-05-29,2026-05-30,2026-06-04,"S",2,61.52,61.52,0,-0.1,"Open","Kroger forced to make costly store fix after federal lawsuit"
 "Klynveld Peat Marwick Goerdeler (KPMG)","KPM",2026-05-29,2026-05-30,2026-06-04,"G",3,NA,NA,NA,NA,"Fout: Unable to import “KPM”.
 attempt to set an attribute on NULL","KPMG Australia’s CEO Andrew Yates quits over whistleblower scandal"
-"3M Company","MMM",2026-05-28,2026-05-29,2026-06-03,"E",3,153.13,153.13,0,-0.1,"Open","Australia sues 3M for record $2bn sum over Pfas ‘forever chemicals’ in firefighting foam"
-"Meta Platforms Inc","META",2026-05-28,2026-05-29,2026-06-03,"S",2,632.51,632.51,0,-0.1,"Open","‘Instagram truly is the new LinkedIn’: why gen Z is using social media to get hired"
-"Thames Water Utilities Ltd","TW",2026-05-28,2026-05-29,2026-06-03,"E",3,100.25,100.25,0,-0.1,"Open","Tell us: have you been affected by water supply issues in the south east? "
+"3M Company","MMM",2026-05-28,2026-05-29,2026-06-03,"E",3,153.13,150.93,-1.4367,1.3367,"Open","Australia sues 3M for record $2bn sum over Pfas ‘forever chemicals’ in firefighting foam"
+"Meta Platforms Inc","META",2026-05-28,2026-05-29,2026-06-03,"S",2,632.51,600.47,-5.0655,4.9655,"Open","‘Instagram truly is the new LinkedIn’: why gen Z is using social media to get hired"
+"Thames Water Utilities Ltd","TW",2026-05-28,2026-05-29,2026-06-03,"E",3,100.25,100.19,-0.0598,-0.0402,"Open","Tell us: have you been affected by water supply issues in the south east? "
 "Santos Limited","STO",2026-05-28,2026-05-29,2026-06-03,"Cross",3,NA,NA,NA,NA,"Fout: Unable to import “STO”.
 attempt to set an attribute on NULL","Santos accused of ‘stringing everybody along’ over Narrabri gas project"
 "South East Water","SVW",2026-05-28,2026-05-29,2026-06-03,"E",3,NA,NA,NA,NA,"Fout: Unable to import “SVW”.
 attempt to set an attribute on NULL","‘They’re a private company, run for profit!’: fury in Kent at South East Water’s outages"
 "Burberry Group plc","BRBY",2026-05-28,2026-05-29,2026-06-03,"Cross",3,NA,NA,NA,NA,"Fout: Unable to import “BRBY”.
 cannot open the connection","Burberry boss could earn up to £12.2m under new bonus scheme as company rolls back climate goals"
-"Temu","PDD",2026-05-28,2026-05-29,2026-06-03,"S",3,84.44,84.44,0,-0.1,"Open","EU fines Temu for failing to stop sale of illegal and dangerous products "
+"Temu","PDD",2026-05-28,2026-05-29,2026-06-03,"S",3,84.44,87.24,3.316,-3.416,"Open","EU fines Temu for failing to stop sale of illegal and dangerous products "
 "Paramount Global","PARA",2026-05-28,2026-05-29,2026-06-03,"S",1,NA,NA,NA,NA,"Fout: Unable to import “PARA”.
 cannot open the connection","WSL lands record four-year deal with CBS Sports to broadcast games in the US"
 "Paramount Global","PARA",2026-05-28,2026-05-29,2026-06-03,"G",2,NA,NA,NA,NA,"Fout: Unable to import “PARA”.
 cannot open the connection","CBS News ousts top 60 Minutes producer as part of broader shake-up"
-"UFC (Ultimate Fighting Championship)","TKO",2026-05-28,2026-05-29,2026-06-03,"S",2,205.18,205.18,0,-0.1,"Open","No Kings event set for 14 June, as Trump celebrates birthday with White House UFC bout"
+"UFC (Ultimate Fighting Championship)","TKO",2026-05-28,2026-05-29,2026-06-03,"S",2,205.18,208.47,1.6035,-1.7035,"Open","No Kings event set for 14 June, as Trump celebrates birthday with White House UFC bout"
 "Paramount Global","PARA",2026-05-28,2026-05-29,2026-06-03,"G",2,NA,NA,NA,NA,"Fout: Unable to import “PARA”.
 cannot open the connection","CBS News shakes up 60 Minutes as ousted correspondents ‘fear what comes next’"
-"TKO Group Holdings (WWE/Endeavor merger entity)","TKO",2026-05-28,2026-05-29,2026-06-03,"G",3,205.18,205.18,0,-0.1,"Open","Delaware Court Sanctions Vince McMahon, Nick Khan in TKO Lawsuit"
-"Alphabet Inc","GOOGL",2026-05-28,2026-05-29,2026-06-03,"G",3,380.34,380.34,0,-0.1,"Open","A Google engineer used internal search data to bet $2.7m on Polymarket. The DOJ has charged him."
-"Meta Platforms, Inc.","META",2026-05-28,2026-05-29,2026-06-03,"Cross",3,632.51,632.51,0,-0.1,"Open","Client Alert: Texas v. Meta and WhatsApp: A New Front in the Battle Over Encryption, Privacy Marketing, and Consumer Protection"
-"Temu","PDD",2026-05-28,2026-05-29,2026-06-03,"S",3,84.44,84.44,0,-0.1,"Open","Why did EU fine Temu $232 million? #world"
-"Graphic Packaging Holdings Company","GPK",2026-05-28,2026-05-29,2026-06-03,"G",2,11.26,11.26,0,-0.1,"Open","REMINDER: Graphic Packaging Holdings Company Investors with Significant Losses Must Act by July 6, 2026"
+"TKO Group Holdings (WWE/Endeavor merger entity)","TKO",2026-05-28,2026-05-29,2026-06-03,"G",3,205.18,208.47,1.6035,-1.7035,"Open","Delaware Court Sanctions Vince McMahon, Nick Khan in TKO Lawsuit"
+"Alphabet Inc","GOOGL",2026-05-28,2026-05-29,2026-06-03,"G",3,380.34,376.37,-1.0438,0.9438,"Open","A Google engineer used internal search data to bet $2.7m on Polymarket. The DOJ has charged him."
+"Meta Platforms, Inc.","META",2026-05-28,2026-05-29,2026-06-03,"Cross",3,632.51,600.47,-5.0655,4.9655,"Open","Client Alert: Texas v. Meta and WhatsApp: A New Front in the Battle Over Encryption, Privacy Marketing, and Consumer Protection"
+"Temu","PDD",2026-05-28,2026-05-29,2026-06-03,"S",3,84.44,87.24,3.316,-3.416,"Open","Why did EU fine Temu $232 million? #world"
+"Graphic Packaging Holdings Company","GPK",2026-05-28,2026-05-29,2026-06-03,"G",2,11.26,11.21,-0.4441,0.3441,"Open","REMINDER: Graphic Packaging Holdings Company Investors with Significant Losses Must Act by July 6, 2026"
 "SIG SAUER","SIGG",2026-05-28,2026-05-29,2026-06-03,"S",2,NA,NA,NA,NA,"Fout: Unable to import “SIGG”.
 cannot open the connection","P320 CASE DISMISSED IN MASSACHUSETTS FEDERAL COURT"
-"Meta Platforms Inc","META",2026-05-28,2026-05-29,2026-06-03,"S",3,632.51,632.51,0,-0.1,"Open","WhatsApp, Meta Can Access Texans’ Private Messages, Lawsuit Claims"
-"Bank of America Corporation","BAC",2026-05-28,2026-05-29,2026-06-03,"S",3,51.6,51.6,0,-0.1,"Open","Epstein files reveal ongoing ties with this one wealth manager"
+"Meta Platforms Inc","META",2026-05-28,2026-05-29,2026-06-03,"S",3,632.51,600.47,-5.0655,4.9655,"Open","WhatsApp, Meta Can Access Texans’ Private Messages, Lawsuit Claims"
+"Bank of America Corporation","BAC",2026-05-28,2026-05-29,2026-06-03,"S",3,51.6,51.51,-0.1744,0.0744,"Open","Epstein files reveal ongoing ties with this one wealth manager"
 "Paramount Global","PARA",2026-05-28,2026-05-29,2026-06-03,"G",1,NA,NA,NA,NA,"Fout: Unable to import “PARA”.
 cannot open the connection","CBS News Names Investigative Journalist, Best-Selling Author and Filmmaker Nick Bilton Executive Producer of ""60 Minutes"""
-"Alphabet Inc","GOOGL",2026-05-28,2026-05-29,2026-06-03,"G",3,380.34,380.34,0,-0.1,"Open","Google engineer used confidential info to win $1.2M in Polymarket bets, feds say"
+"Alphabet Inc","GOOGL",2026-05-28,2026-05-29,2026-06-03,"G",3,380.34,376.37,-1.0438,0.9438,"Open","Google engineer used confidential info to win $1.2M in Polymarket bets, feds say"
 "Burberry Group PLC","BRBY",2026-05-28,2026-05-29,2026-06-03,"Cross",3,NA,NA,NA,NA,"Fout: Unable to import “BRBY”.
 cannot open the connection","Burberry boss could earn up to £12.2m under new bonus scheme as company rolls back climate goals"
-"TKO Group Holdings (WWE/Endeavor merger)","TKO",2026-05-28,2026-05-29,2026-06-03,"G",3,205.18,205.18,0,-0.1,"Open","Delaware Court Sanctions Vince McMahon, Nick Khan in TKO Lawsuit"
-"Ticketmaster Entertainment Inc","LYV",2026-05-27,2026-05-28,2026-06-02,"S",2,167.03,168.41,0.8262,-0.9262,"Open","Australian BTS fans blast Ticketmaster’s ‘predatory’ tactic of hiding price until tickets go on sale"
-"Alphabet Inc","GOOGL",2026-05-27,2026-05-28,2026-06-02,"S",2,390.13,380.34,-2.5094,2.4094,"Open","What We Ask Google by Simon Rogers review – the secrets of our search history"
+"TKO Group Holdings (WWE/Endeavor merger)","TKO",2026-05-28,2026-05-29,2026-06-03,"G",3,205.18,208.47,1.6035,-1.7035,"Open","Delaware Court Sanctions Vince McMahon, Nick Khan in TKO Lawsuit"
+"Ticketmaster Entertainment Inc","LYV",2026-05-27,2026-05-28,2026-06-02,"S",2,167.03,170.45,2.0475,-2.1475,"Open","Australian BTS fans blast Ticketmaster’s ‘predatory’ tactic of hiding price until tickets go on sale"
+"Alphabet Inc","GOOGL",2026-05-27,2026-05-28,2026-06-02,"S",2,390.13,376.37,-3.527,3.427,"Open","What We Ask Google by Simon Rogers review – the secrets of our search history"
 "Southern Cross Media Group","SXL",2026-05-27,2026-05-28,2026-06-02,"G",2,NA,NA,NA,NA,"Fout: Unable to import “SXL”.
 attempt to set an attribute on NULL","Gina Rinehart bankrolls purchase of 10% stake in Seven network owner Southern Cross Media "
-"BP plc","BP",2026-05-27,2026-05-28,2026-06-02,"G",2,41.59,41.87,0.6732,-0.7732,"Open","Fired BP chair disputes oil company’s claims of poor conduct"
-"Ticketmaster Entertainment","TME",2026-05-27,2026-05-28,2026-06-02,"S",2,9.09,9.22,1.4301,-1.5301,"Open","Australian BTS fans blast Ticketmaster’s ‘predatory’ tactic of hiding price until tickets go on sale"
-"Meta Platforms Inc","META",2026-05-27,2026-05-28,2026-06-02,"G",2,635.29,632.51,-0.4376,0.3376,"Open","Reform UK spending on Facebook ads surged before May elections"
+"BP plc","BP",2026-05-27,2026-05-28,2026-06-02,"G",2,41.59,42.94,3.246,-3.346,"Open","Fired BP chair disputes oil company’s claims of poor conduct"
+"Ticketmaster Entertainment","TME",2026-05-27,2026-05-28,2026-06-02,"S",2,9.09,9.5,4.5104,-4.6104,"Open","Australian BTS fans blast Ticketmaster’s ‘predatory’ tactic of hiding price until tickets go on sale"
+"Meta Platforms Inc","META",2026-05-27,2026-05-28,2026-06-02,"G",2,635.29,600.47,-5.481,5.381,"Open","Reform UK spending on Facebook ads surged before May elections"
 "CBS Corporation","PARA",2026-05-27,2026-05-28,2026-06-02,"G",2,NA,NA,NA,NA,"Fout: Unable to import “PARA”.
 cannot open the connection","60 Minutes journalist accuses CBS News of penalizing her after contract not renewed"
-"Manchester United plc","MANU",2026-05-27,2026-05-28,2026-06-02,"G",2,20.09,21.01,4.5794,-4.6794,"Open","Manchester United take £22m hit from sacking of Ruben Amorim"
-"Singha Corporation Public Company Limited","TSCO",2026-05-27,2026-05-28,2026-06-02,"S",3,31.37,31.53,0.51,-0.61,"Open","Brit who claims he was sexually abused by his brother - the heir to Thailand's Singha beer empire - reveals new details of the 'attacks' and says he was paid by his family to keep quiet"
-"Condé Nast","CNDT",2026-05-27,2026-05-28,2026-06-02,"S",2,1.79,1.73,-3.352,3.252,"Open","Condé Nast Settles With Union 6 Months After Staffers Fired Over HR Confrontation"
-"BP plc","BP",2026-05-27,2026-05-28,2026-06-02,"G",3,41.59,41.87,0.6732,-0.7732,"Open","BP chairman Albert Manifold ousted amid misconduct allegations after just eight months"
+"Manchester United plc","MANU",2026-05-27,2026-05-28,2026-06-02,"G",2,20.09,21.82,8.6112,-8.7112,"Open","Manchester United take £22m hit from sacking of Ruben Amorim"
+"Singha Corporation Public Company Limited","TSCO",2026-05-27,2026-05-28,2026-06-02,"S",3,31.37,31.78,1.307,-1.407,"Open","Brit who claims he was sexually abused by his brother - the heir to Thailand's Singha beer empire - reveals new details of the 'attacks' and says he was paid by his family to keep quiet"
+"Condé Nast","CNDT",2026-05-27,2026-05-28,2026-06-02,"S",2,1.79,1.75,-2.2346,2.1346,"Open","Condé Nast Settles With Union 6 Months After Staffers Fired Over HR Confrontation"
+"BP plc","BP",2026-05-27,2026-05-28,2026-06-02,"G",3,41.59,42.94,3.246,-3.346,"Open","BP chairman Albert Manifold ousted amid misconduct allegations after just eight months"
 "Thai Beverage Public Company Limited","THBEV",2026-05-27,2026-05-28,2026-06-02,"S",3,NA,NA,NA,NA,"Fout: Unable to import “THBEV”.
 cannot open the connection","Brit who claims he was sexually abused by his brother - the heir to Thailand's Singha beer empire - reveals new details of the 'attacks' and says he was paid by his family to keep quiet"
-"Google Inc","GOOGL",2026-05-27,2026-05-28,2026-06-02,"G",2,390.13,380.34,-2.5094,2.4094,"Open","DOJ charges Google staffer over Polymarket trades netting $1.2 million"
+"Google Inc","GOOGL",2026-05-27,2026-05-28,2026-06-02,"G",2,390.13,376.37,-3.527,3.427,"Open","DOJ charges Google staffer over Polymarket trades netting $1.2 million"
 "NetEnt","NENT",2026-05-27,2026-05-28,2026-06-02,"S",2,NA,NA,NA,NA,"Fout: Unable to import “NENT”.
 cannot open the connection","How To Be In The Top 10 With quickspin"
-"Microsoft Corporation","MSFT",2026-05-26,2026-05-27,2026-06-01,"G",2,412.67,450.24,9.1041,-9.2041,"Open","Microsoft agrees to pay $250m to settle lawsuit over Activision Blizzard deal"
+"Microsoft Corporation","MSFT",2026-05-26,2026-05-27,2026-06-01,"G",2,412.67,460.52,11.5952,-11.6952,"Gesloten","Microsoft agrees to pay $250m to settle lawsuit over Activision Blizzard deal"
 "Independant Media (Pty) Ltd / News24","INL",2026-05-26,2026-05-27,2026-06-01,"G",3,NA,NA,NA,NA,"Fout: Unable to import “INL”.
 attempt to set an attribute on NULL","News24 | The ‘housewife’, the driver, the pensioner and the dodgy lottery grant"
 "ITV plc","ITV",2026-05-26,2026-05-27,2026-06-01,"S",3,NA,NA,NA,NA,"Fout: Unable to import “ITV”.
 attempt to set an attribute on NULL","'I felt used, dirty, like a prostitute': After two women claim they were raped on Channel 4's Married At First Sight, another 'bride' tells of her own deeply traumatising experience"
-"Meta Platforms, Inc.","META",2026-05-26,2026-05-27,2026-06-01,"S",3,635.26,632.51,-0.4329,0.3329,"Open","Facebook panics as more social media addiction lawsuits pop up across the country… the company was dealt a major blow in Kentucky"
-"Pfizer Inc","PFE",2026-05-26,2026-05-27,2026-06-01,"E",3,26.21,26.18,-0.1145,0.0145,"Open","Why Trump administration’s plan to attempt to destroy Pfas is ‘nonsensical’ "
-"BP plc","BP",2026-05-26,2026-05-27,2026-06-01,"G",3,41.65,41.87,0.5282,-0.6282,"Open","BP removes chair Albert Manifold over ‘serious’ governance and conduct concerns"
+"Meta Platforms, Inc.","META",2026-05-26,2026-05-27,2026-06-01,"S",3,635.26,600.47,-5.4765,5.3765,"Gesloten","Facebook panics as more social media addiction lawsuits pop up across the country… the company was dealt a major blow in Kentucky"
+"Pfizer Inc","PFE",2026-05-26,2026-05-27,2026-06-01,"E",3,26.21,25.63,-2.2129,2.1129,"Gesloten","Why Trump administration’s plan to attempt to destroy Pfas is ‘nonsensical’ "
+"BP plc","BP",2026-05-26,2026-05-27,2026-06-01,"G",3,41.65,42.94,3.0972,-3.1972,"Gesloten","BP removes chair Albert Manifold over ‘serious’ governance and conduct concerns"
 "Post Office Ltd","POL",2026-05-26,2026-05-27,2026-06-01,"G",3,NA,NA,NA,NA,"Fout: Unable to import “POL”.
 cannot open the connection","Inquiry into Post Office Horizon scandal faces five-year delay without extra funding"
-"BP plc","BP",2026-05-26,2026-05-27,2026-06-01,"G",3,41.65,41.87,0.5282,-0.6282,"Open","BP chair removed over ‘unacceptable’ governance oversight and conduct issues; UK petrol prices hit new Iran war high – as it happened"
-"BHP Group Limited","BHP",2026-05-26,2026-05-27,2026-06-01,"E",2,87.83,88.91,1.2297,-1.3297,"Open","Rein in fossil fuel tax concessions, Labor MP says after BHP revelations"
-"Corteva Agriscience","CTVA",2026-05-26,2026-05-27,2026-06-01,"E",3,79.89,78.28,-2.0153,1.9153,"Open","Vermont becomes first US state to ban paraquat herbicide over Parkinson’s fears"
-"Commvault Systems, Inc.","CVLT",2026-05-26,2026-05-27,2026-06-01,"G",3,107.24,118.75,10.7329,-10.8329,"Open","CVLT Court Notification: Commvault ARR Growth Issues and Corresponding 31% Stock Drop Trigger Shareholder Class Action for Securities Fraud"
-"Channel 4 Television Corporation (via parent company)","CMCSA",2026-05-26,2026-05-27,2026-06-01,"S",3,25.22,24.87,-1.3878,1.2878,"Open","'I felt used, dirty, like a prostitute': After two women claim they were raped on Channel 4's Married At First Sight, another 'bride' tells of her own deeply traumatising experience"
-"Evolution AB","EVO",2026-05-26,2026-05-27,2026-06-01,"S",2,2.87,3.07,6.9686,-7.0686,"Open","Who is Your Ancient Fortune Poseidon Megaways Customer?"
-"Teck Resources Limited","TECK",2026-05-26,2026-05-27,2026-06-01,"E",3,65.24,66.16,1.4102,-1.5102,"Open","Mining giant polluted Quebec waters for over a decade before $100M fine. What took so long?"
-"Meta Platforms Inc","META",2026-05-26,2026-05-27,2026-06-01,"S",3,635.26,632.51,-0.4329,0.3329,"Open","Proxy Impact: Shareholders Move to Link Meta Executive Pay to Child Safety as Landmark Lawsuit Losses Mount"
-"Sportradar Group AG","SRAD",2026-05-26,2026-05-27,2026-06-01,"Cross",3,12.89,13.21,2.4825,-2.5825,"Open","SRAD Court Notification: Sportradar Gambling Allegations and Corresponding 22% Stock Drop Trigger Shareholder Class Action for Securities Fraud"
-"BP plc","BP",2026-05-26,2026-05-27,2026-06-01,"G",3,41.65,41.87,0.5282,-0.6282,"Open","BP ousts Chair Albert Manifold over governance and conduct issues"
-"Phreesia, Inc.","PHR",2026-05-26,2026-05-27,2026-06-01,"G",2,9.13,9.86,7.9956,-8.0956,"Open","REMINDER: Phreesia, Inc. Investors With Significant Losses Must Act By July 13, 2026"
-"Sportradar","SRAD",2026-05-25,2026-05-26,2026-05-31,"G",3,12.99,13.21,1.6936,-1.7936,"Open","$SRAD Shareholder Announcement: Sportradar may have Misled Investors about its Revenue Sources – Contact BFA Law about the Pending Securities Fraud Class Action"
-"Commvault Systems Inc","CVLT",2026-05-25,2026-05-26,2026-05-31,"G",3,108.09,118.75,9.8622,-9.9622,"Open","$CVLT Shareholder Announcement: Commvault may have Misled Investors about its ARR Growth Issues – Contact BFA Law about the Pending Securities Fraud Class Action"
+"BP plc","BP",2026-05-26,2026-05-27,2026-06-01,"G",3,41.65,42.94,3.0972,-3.1972,"Gesloten","BP chair removed over ‘unacceptable’ governance oversight and conduct issues; UK petrol prices hit new Iran war high – as it happened"
+"BHP Group Limited","BHP",2026-05-26,2026-05-27,2026-06-01,"E",2,87.83,91.22,3.8597,-3.9597,"Gesloten","Rein in fossil fuel tax concessions, Labor MP says after BHP revelations"
+"Corteva Agriscience","CTVA",2026-05-26,2026-05-27,2026-06-01,"E",3,79.89,77.68,-2.7663,2.6663,"Gesloten","Vermont becomes first US state to ban paraquat herbicide over Parkinson’s fears"
+"Commvault Systems, Inc.","CVLT",2026-05-26,2026-05-27,2026-06-01,"G",3,107.24,122.39,14.1272,-14.2272,"Gesloten","CVLT Court Notification: Commvault ARR Growth Issues and Corresponding 31% Stock Drop Trigger Shareholder Class Action for Securities Fraud"
+"Channel 4 Television Corporation (via parent company)","CMCSA",2026-05-26,2026-05-27,2026-06-01,"S",3,25.22,25.05,-0.6741,0.5741,"Gesloten","'I felt used, dirty, like a prostitute': After two women claim they were raped on Channel 4's Married At First Sight, another 'bride' tells of her own deeply traumatising experience"
+"Evolution AB","EVO",2026-05-26,2026-05-27,2026-06-01,"S",2,2.87,3.07,6.9686,-7.0686,"Gesloten","Who is Your Ancient Fortune Poseidon Megaways Customer?"
+"Teck Resources Limited","TECK",2026-05-26,2026-05-27,2026-06-01,"E",3,65.24,67.85,4.0006,-4.1006,"Gesloten","Mining giant polluted Quebec waters for over a decade before $100M fine. What took so long?"
+"Meta Platforms Inc","META",2026-05-26,2026-05-27,2026-06-01,"S",3,635.26,600.47,-5.4765,5.3765,"Gesloten","Proxy Impact: Shareholders Move to Link Meta Executive Pay to Child Safety as Landmark Lawsuit Losses Mount"
+"Sportradar Group AG","SRAD",2026-05-26,2026-05-27,2026-06-01,"Cross",3,12.89,13.77,6.827,-6.927,"Gesloten","SRAD Court Notification: Sportradar Gambling Allegations and Corresponding 22% Stock Drop Trigger Shareholder Class Action for Securities Fraud"
+"BP plc","BP",2026-05-26,2026-05-27,2026-06-01,"G",3,41.65,42.94,3.0972,-3.1972,"Gesloten","BP ousts Chair Albert Manifold over governance and conduct issues"
+"Phreesia, Inc.","PHR",2026-05-26,2026-05-27,2026-06-01,"G",2,9.13,10.66,16.7579,-16.8579,"Gesloten","REMINDER: Phreesia, Inc. Investors With Significant Losses Must Act By July 13, 2026"
+"Sportradar","SRAD",2026-05-25,2026-05-26,2026-05-31,"G",3,12.99,13.77,6.0046,-6.1046,"Gesloten","$SRAD Shareholder Announcement: Sportradar may have Misled Investors about its Revenue Sources – Contact BFA Law about the Pending Securities Fraud Class Action"
+"Commvault Systems Inc","CVLT",2026-05-25,2026-05-26,2026-05-31,"G",3,108.09,122.39,13.2297,-13.3297,"Gesloten","$CVLT Shareholder Announcement: Commvault may have Misled Investors about its ARR Growth Issues – Contact BFA Law about the Pending Securities Fraud Class Action"
 "NevGold Corp","NVGL",2026-05-25,2026-05-26,2026-05-31,"E",2,NA,NA,NA,NA,"Fout: Unable to import “NVGL”.
 cannot open the connection","The Crushed Pile in Nevada: How a Forgotten 1989 Gold Heap Is Becoming One of America’s Few Near-Term Antimony Solutions"
 "NevGold Corp","NVGD",2026-05-25,2026-05-26,2026-05-31,"E",2,NA,NA,NA,NA,"Fout: Unable to import “NVGD”.
 cannot open the connection","America’s Brownfield Antimony Play: Every Drillhole Hits as Nevada Project Targets 2027 Production"
-"All3Media (part of Discovery Inc.)","WBD",2026-05-25,2026-05-26,2026-05-31,"S",3,27,27.01,0.037,-0.137,"Open","Allegations of rape on ‘Married at First Sight UK’ rattle the reality-TV industry"
+"All3Media (part of Discovery Inc.)","WBD",2026-05-25,2026-05-26,2026-05-31,"S",3,27,27.25,0.9259,-1.0259,"Gesloten","Allegations of rape on ‘Married at First Sight UK’ rattle the reality-TV industry"
 "Channel 4 Television Corporation (ITV plc moedermaatschappij)","ITV",2026-05-25,2026-05-26,2026-05-31,"S",3,NA,NA,NA,NA,"Fout: Unable to import “ITV”.
 attempt to set an attribute on NULL","Love Island star Sharon Gaffka calls for MAFS UK bosses to introduce 'specialist safeguarding professionals separate from production' after stars alleged welfare measures fell short following sexual assault claims"
-"BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,88.91,2.798,-2.898,"Open","The BHP files: World’s biggest miner BHP backtracks on climate action with key projects put on ice, leaked documents reveal"
-"BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,88.91,2.798,-2.898,"Open","BHP defies its own climate strategy to spend hundreds of millions on polluting diesel trucks in Pilbara "
-"BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,88.91,2.798,-2.898,"Open","Australian taxpayers subsidise Big Mining’s use of fossil fuel to the tune of $4bn a year. It’s a strange way to tackle emissions | Adam Morton"
-"BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,88.91,2.798,-2.898,"Open","Revealed: the internal BHP memo that slammed the brakes on world’s biggest miner’s climate push"
-"BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,88.91,2.798,-2.898,"Open","Morning Mail: BHP’s climate fail revealed, pope denounces AI, life on the world’s longest golf course"
-"BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,88.91,2.798,-2.898,"Open","BHP quietly scrapped plan to build Pilbara plant that would have drastically cut emissions"
+"BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,91.22,5.4688,-5.5688,"Gesloten","The BHP files: World’s biggest miner BHP backtracks on climate action with key projects put on ice, leaked documents reveal"
+"BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,91.22,5.4688,-5.5688,"Gesloten","BHP defies its own climate strategy to spend hundreds of millions on polluting diesel trucks in Pilbara "
+"BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,91.22,5.4688,-5.5688,"Gesloten","Australian taxpayers subsidise Big Mining’s use of fossil fuel to the tune of $4bn a year. It’s a strange way to tackle emissions | Adam Morton"
+"BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,91.22,5.4688,-5.5688,"Gesloten","Revealed: the internal BHP memo that slammed the brakes on world’s biggest miner’s climate push"
+"BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,91.22,5.4688,-5.5688,"Gesloten","Morning Mail: BHP’s climate fail revealed, pope denounces AI, life on the world’s longest golf course"
+"BHP Group Limited","BHP",2026-05-25,2026-05-26,2026-05-31,"E",3,86.49,91.22,5.4688,-5.5688,"Gesloten","BHP quietly scrapped plan to build Pilbara plant that would have drastically cut emissions"
 "Channel 4 Television Corporation (waarschijnlijk deel van All3Media/ITVX)","ITV",2026-05-25,2026-05-26,2026-05-31,"S",3,NA,NA,NA,NA,"Fout: Unable to import “ITV”.
 attempt to set an attribute on NULL","Love Island star Sharon Gaffka calls for MAFS UK bosses to introduce 'specialist safeguarding professionals separate from production' after stars alleged welfare measures fell short following sexual assault claims"
 "Warner Bros. Discovery","WBD",2026-05-24,2026-05-25,2026-05-30,"S",3,27,27.01,0.037,-0.137,"Open","EXCLUSIVE: Massive Reality TV Show 'Set for Axe' After Female Contestants' Rape and Sex Abuse Allegations Air — As Its US Season Launches"
