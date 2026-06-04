@@ -1,4 +1,5 @@
 "company","ticker","pub_date","entry_date","exit_date","pillar","severity","entry_price","exit_price","stock_return","short_return","status","title"
+"Tesla Inc / X Corp (Elon Musk)","TSLA",2026-06-04,2026-06-05,2026-06-10,"G",2,NA,NA,NA,NA,"Geen data","Starmer accuses Elon Musk of trying to ‘whip up division’ in UK over murder of Henry Nowak – UK politics live"
 "Lloyds Banking Group","LLOY",2026-06-03,2026-06-04,2026-06-09,"S",2,NA,NA,NA,NA,"Fout: Unable to import “LLOY”.
 cannot open the connection"," Lloyds, Halifax and Bank of Scotland apologise as users report app and online banking outage – as it happened"
 "Ovo Energy","OVO",2026-06-03,2026-06-04,2026-06-09,"S",2,NA,NA,NA,NA,"Fout: Unable to import “OVO”.
@@ -6,6 +7,10 @@ attempt to set an attribute on NULL","Ovo Energy to pay more than £10m over pre
 "South East Water","SEW",2026-06-03,2026-06-04,2026-06-09,"S",3,NA,NA,NA,NA,"Fout: Unable to import “SEW”.
 attempt to set an attribute on NULL","South East Water’s greatest failure was not contacting customers during winter outages, report finds"
 "UFC (Ultimate Fighting Championship)","TKO",2026-06-03,2026-06-04,2026-06-09,"G",2,NA,NA,NA,NA,"Geen data","‘Maybe we’ll never ever take it down’: Trump says UFC arena at White House could stay permanently"
+"United Utilities Group PLC","UU",2026-06-03,2026-06-04,2026-06-09,"G",2,NA,NA,NA,NA,"Fout: Unable to import “UU”.
+attempt to set an attribute on NULL","What does Andy Burnham mean by more ‘public control’ of water and energy? He is too vague"
+"OVO Energy","OVO",2026-06-03,2026-06-04,2026-06-09,"S",2,NA,NA,NA,NA,"Fout: Unable to import “OVO”.
+attempt to set an attribute on NULL","Ovo Energy to pay more than £10m over prepayment meter monitoring failings"
 "Palantir Technologies Inc","PLTR",2026-06-02,2026-06-03,2026-06-08,"Cross",3,142.2,142.2,0,-0.1,"Open","Tuesday briefing: Palantir’s rise – and why so many oppose its role in the British state"
 "BP plc","BP",2026-06-02,2026-06-03,2026-06-08,"G",2,43.68,43.68,0,-0.1,"Open","BP backs Amanda Blanc to lead search for new chair despite investor concerns"
 "Apple Inc","AAPL",2026-06-02,2026-06-03,2026-06-08,"S",2,310.26,310.26,0,-0.1,"Open","Congress pressures Apple to keep first unionized U.S. store open"
@@ -23,6 +28,7 @@ attempt to set an attribute on NULL","‘Gateway to full-scale fracking’: Sant
 "South West Water","SWW",2026-06-02,2026-06-03,2026-06-08,"E",3,NA,NA,NA,NA,"Fout: Unable to import “SWW”.
 attempt to set an attribute on NULL","‘My son is still suffering’: the ill effects of water contamination in ‘Brixham incident’"
 "The Geo Group Inc","GEO",2026-06-02,2026-06-03,2026-06-08,"S",3,23.6,23.6,0,-0.1,"Open","New Jersey sues Geo Group, private operator of Delaney Hall ICE facility"
+"Palantir Technologies","PLTR",2026-06-02,2026-06-03,2026-06-08,"Cross",3,142.2,142.2,0,-0.1,"Open","Tuesday briefing: Palantir’s rise – and why so many oppose its role in the British state"
 "Palantir Technologies","PLTR",2026-06-01,2026-06-02,2026-06-07,"Cross",3,152.17,142.2,-6.5519,6.4519,"Open","FCA’s Palantir deal could expose UK financial data to Trump’s US, critics fear"
 "Manchester Airport Group / Stansted Airport","MAG",2026-06-01,2026-06-02,2026-06-07,"S",2,NA,NA,NA,NA,"Fout: Unable to import “MAG”.
 cannot open the connection","‘Cheap’ parking at Stansted airport cost me hundreds of pounds"
