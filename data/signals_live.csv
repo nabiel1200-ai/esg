@@ -1,4 +1,15 @@
 "company","ticker","pub_date","entry_date","exit_date","pillar","severity","entry_price","exit_price","stock_return","short_return","status","title"
+"Aviva plc","AV",2026-06-08,2026-06-09,2026-06-14,"G",2,NA,NA,NA,NA,"Fout: Unable to import “AV”.
+attempt to set an attribute on NULL","Aviva detects record £230m in bogus insurance claims as use of AI rises"
+"Apple Inc","AAPL",2026-06-08,2026-06-09,2026-06-14,"S",2,NA,NA,NA,NA,"Fout: Unable to import “AAPL”.
+attempt to set an attribute on NULL","Starmer gives tech firms ultimatum to block explicit images on children’s phones"
+"Meta Platforms Inc","META",2026-06-08,2026-06-09,2026-06-14,"S",3,NA,NA,NA,NA,"Fout: Unable to import “META”.
+attempt to set an attribute on NULL","‘Killer of trust’: social media groups fuel misinformation in UK, report finds"
+"Apple Inc","AAPL",2026-06-07,2026-06-08,2026-06-13,"S",2,NA,NA,NA,NA,"Geen data","The health tracker backlash is here – so ditch the data and set yourself free | Emma Beddington"
+"VF Corporation","VFC",2026-06-07,2026-06-08,2026-06-13,"E",1,NA,NA,NA,NA,"Geen data","You break it, they’ll fix it: 11 outdoor brands that stand by their gear for the long haul"
+"Airline Industry (Multiple)","MULTI",2026-06-07,2026-06-08,2026-06-13,"E",2,NA,NA,NA,NA,"Fout: Unable to import “MULTI”.
+cannot open the connection","Air fare rises ‘inevitable’ as airlines face extra $100bn jet fuel bill this year"
+"British Airways","IAG",2026-06-07,2026-06-08,2026-06-13,"E",2,NA,NA,NA,NA,"Geen data","BA boss warns costly aviation taxes and rail tickets are stunting UK growth"
 "Starbucks Corporation","SBUX",2026-06-06,2026-06-07,2026-06-12,"S",2,NA,NA,NA,NA,"Geen data","How a Starbucks marketing stunt spiralled into mass boycotts in South Korea"
 "West Ham United","WHUFC",2026-06-06,2026-06-07,2026-06-12,"G",3,NA,NA,NA,NA,"Fout: Unable to import “WHUFC”.
 cannot open the connection","David Sullivan: how did the pornographer rise so high in modern football?"
@@ -11,6 +22,12 @@ cannot open the connection","‘Free of the shackles’: Michael Grade’s GB Ne
 "West Ham United Holdings","WHUFC",2026-06-06,2026-06-07,2026-06-12,"G",3,NA,NA,NA,NA,"Fout: Unable to import “WHUFC”.
 cannot open the connection","David Sullivan: how did the pornographer rise so high in modern football?"
 "The GEO Group Inc","GEO",2026-06-06,2026-06-07,2026-06-12,"S",3,NA,NA,NA,NA,"Geen data","‘It’s like they’re kidnapped there’: families tell of distress over ‘inhumane’ ICE jail "
+"Microsoft Corporation","MSFT",2026-06-06,2026-06-07,2026-06-12,"S",2,NA,NA,NA,NA,"Geen data","Personal research: Google's ""Artificial Intelligence"" acknowledges it's not intelligent and has a massive problem with political bias."
+"Jefferies Financial Group Inc.","JEF",2026-06-06,2026-06-07,2026-06-12,"G",3,NA,NA,NA,NA,"Geen data","JEF INVESTIGATION: Robbins Geller Rudman & Dowd LLP Launches Investigation into Jefferies Financial Group, Inc. and Encourages Investors and Potential Witnesses to Contact Law Firm"
+"Paramount Global","PARA",2026-06-06,2026-06-07,2026-06-12,"G",3,NA,NA,NA,NA,"Fout: Unable to import “PARA”.
+cannot open the connection","Paramount to face legal challenge from states on Warner deal"
+"X Corp (Twitter)","TWTR",2026-06-06,2026-06-07,2026-06-12,"G",2,NA,NA,NA,NA,"Fout: Unable to import “TWTR”.
+cannot open the connection","Ministers may try to curb spread of misinformation during social unrest"
 "Thames Water Utilities Ltd","TW",2026-06-05,2026-06-06,2026-06-11,"G",3,NA,NA,NA,NA,"Geen data","Thames Water should be nationalised, says Andy Burnham"
 "Nine Entertainment Co Holdings Limited","NVG",2026-06-05,2026-06-06,2026-06-11,"S",3,NA,NA,NA,NA,"Geen data","Mafs Australia stars say the show is not safe for contestants: ‘They just sat back and let the cameras roll’"
 "SoFi Stadium / Los Angeles Rams / LA Chargers","PSP",2026-06-05,2026-06-06,2026-06-11,"S",2,NA,NA,NA,NA,"Geen data","LA-area stadium workers to vote on strike a week before World Cup begins"
