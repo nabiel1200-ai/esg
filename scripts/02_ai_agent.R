@@ -393,23 +393,28 @@ beoordeel_artikel <- function(titel, beschrijving, api_key) {
   } else ""
 
   prompt <- paste0(
-    "Je bent een ESG analist. Beoordeel het volgende nieuwsartikel:\n\n",
-    "TITEL: ", titel, "\n\n",
-    context,
-    "Beantwoord deze vragen:\n",
-    "1. Gaat dit over een ESG controversy voor een BEURSGENOTEERD bedrijf?\n",
-    "   - Alleen bedrijven op NYSE, NASDAQ, AEX, LSE, etc.\n",
-    "   - Overheid, NGOs, privébedrijven tellen NIET\n",
-    "2. Welk beursgenoteerd bedrijf?\n",
-    "3. Wat is de beursticker? (echte ticker, bijv. AAPL, XOM, SHEL)\n",
-    "4. Pillar: E (Environmental), S (Social), G (Governance), Cross (meerdere)\n",
-    "5. Severity: 1=laag, 2=midden, 3=hoog\n\n",
-    "Voorbeelden:\n",
-    "{\"is_esg\": true, \"bedrijf\": \"Apple Inc\", \"ticker\": \"AAPL\", \"pillar\": \"S\", \"severity\": 2}\n",
-    "{\"is_esg\": true, \"bedrijf\": \"ExxonMobil\", \"ticker\": \"XOM\", \"pillar\": \"E\", \"severity\": 3}\n",
-    "{\"is_esg\": false, \"bedrijf\": null, \"ticker\": null, \"pillar\": null, \"severity\": null}\n\n",
-    "Antwoord ALLEEN in JSON, geen extra tekst."
-  )
+  "Je bent een ESG analist. Beoordeel het volgende nieuwsartikel:\n\n",
+  "TITEL: ", titel, "\n\n",
+  context,
+  "Beantwoord deze vragen:\n",
+  "1. Gaat dit over een ESG controversy voor een BEURSGENOTEERD bedrijf?\n",
+  "   - Alleen bedrijven op NYSE, NASDAQ, AEX, LSE, etc.\n",
+  "   - Overheid, NGOs, privébedrijven tellen NIET\n",
+  "   - Als het bedrijf zelf niet beursgenoteerd is maar een beursgenoteerde moeder heeft,\n",
+  "     gebruik dan de moedermaatschappij en haar ticker\n",
+  "   - Als je niet zeker bent van de ticker, zet is_esg op false\n",
+  "2. Welk beursgenoteerd bedrijf? (als subsidiaire: gebruik de moeder)\n",
+  "3. Wat is de beursticker? BELANGRIJK: controleer of deze ticker echt bij dit bedrijf hoort.\n",
+  "   KLM = AF (Euronext), Instagram = META, YouTube = GOOGL, etc.\n",
+  "   Als je de ticker niet zeker weet, zet is_esg op false.\n",
+  "4. Pillar: E (Environmental), S (Social), G (Governance), Cross (meerdere)\n",
+  "5. Severity: 1=laag, 2=midden, 3=hoog\n\n",
+  "Voorbeelden:\n",
+  "{\"is_esg\": true, \"bedrijf\": \"Apple Inc\", \"ticker\": \"AAPL\", \"pillar\": \"S\", \"severity\": 2}\n",
+  "{\"is_esg\": true, \"bedrijf\": \"Air France-KLM\", \"ticker\": \"AF\", \"pillar\": \"S\", \"severity\": 2}\n",
+  "{\"is_esg\": false, \"bedrijf\": null, \"ticker\": null, \"pillar\": null, \"severity\": null}\n\n",
+  "Antwoord ALLEEN in JSON, geen extra tekst."
+)
 
   body <- list(
     model      = "claude-haiku-4-5-20251001",
